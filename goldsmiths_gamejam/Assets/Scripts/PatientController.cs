@@ -5,7 +5,6 @@ using System;
 
 public class PatientController : MonoBehaviour {
 
-	List<Illness> illnesses;
 	public Transform sittingPoint;
 	public Transform exitPoint;
 
@@ -59,10 +58,5 @@ public class PatientController : MonoBehaviour {
 		if (seatReachedEvent != null)
 			seatReachedEvent ();
 	}
-
-	public List<Illness> GetIllnesses()
-	{
-		return illnesses;
-	}
-
+	
 }

@@ -6,6 +6,7 @@ public class GameManager : StateMachineBase
 {
 
 	public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END, GAME_OVER }
+	InputController inputController;
 
 	public int currentDay;
 	public int currentPopulation;
@@ -31,6 +32,7 @@ public class GameManager : StateMachineBase
 	} 
 
 	public void Start() {
+		inputController = GetComponent<InputController> ();
 		currentState = GameStates.INTRO;
 	}
 
@@ -65,6 +67,7 @@ public class GameManager : StateMachineBase
 
 	void HEALING_OnEnterState()
 	{
+		inputController.successComboEvent += OnPatientHealed;
 	}
 
 	void HEALING_Update()
@@ -76,6 +79,11 @@ public class GameManager : StateMachineBase
 
 		if (Input.GetKeyDown (KeyCode.W))
 			currentState = GameStates.DEAD;
+	}
+
+	void HEALING_OnExitState() 
+	{
+		inputController.successComboEvent -= OnPatientHealed;
 	}
 
 	void HEALED_OnEnterState()
@@ -109,6 +117,7 @@ public class GameManager : StateMachineBase
 	void OnPatientHealed()
 	{
 		currentState = GameStates.HEALED;
+		currentPatient.Heal ();
 	}
 
 

@@ -68,7 +68,9 @@ public abstract class StateMachineBase : MonoBehaviour
     protected virtual void OnAwake()
     {
     }
-
+	protected virtual void OnUpdate()
+	{
+	}
     protected virtual void OnRepresent()
     {
     }
@@ -319,6 +321,7 @@ public abstract class StateMachineBase : MonoBehaviour
     void Update()
     {
         state.DoUpdate();
+		OnUpdate ();
     }
     void LateUpdate()
     {

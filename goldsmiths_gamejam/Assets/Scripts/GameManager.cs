@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : StateMachineBase 
 {
@@ -13,7 +14,10 @@ public class GameManager : StateMachineBase
 	public PatientController currentPatient;
 
 	private static GameManager instance;
-	
+	public Text stateText;
+
+
+
 	public static GameManager Instance
 	{
 		get
@@ -30,6 +34,10 @@ public class GameManager : StateMachineBase
 		currentState = GameStates.INTRO;
 	}
 
+	protected override void OnUpdate() {
+		stateText.text = currentState.ToString ();
+	}
+
 	IEnumerator INTRO_EnterState()
 	{
 		// Initialize stuff
@@ -38,6 +46,8 @@ public class GameManager : StateMachineBase
 		// Reset stuff
 		yield return new WaitForSeconds (2.0f);
 		currentState = GameStates.PATIENT_ENTER;
+
+
 	}
 
 
@@ -47,9 +57,10 @@ public class GameManager : StateMachineBase
 		// Patient animation
 		// Playing silhouette animation
 		// Instantiate patient
-
+		currentPatient.GoToSeat ();
 
 		Debug.Log ("Patient Enter");
+		currentPatient.seatReachedEvent += OnPatientSeated;
 	}
 
 	void HEALING_OnEnterState()
@@ -58,8 +69,10 @@ public class GameManager : StateMachineBase
 
 	void HEALING_Update()
 	{
-		if (Input.GetKeyDown (KeyCode.Q))
+		if (Input.GetKeyDown (KeyCode.Q)) {
+			currentPatient.Heal();
 			currentState = GameStates.HEALED;
+		}
 
 		if (Input.GetKeyDown (KeyCode.W))
 			currentState = GameStates.DEAD;
@@ -67,12 +80,12 @@ public class GameManager : StateMachineBase
 
 	void HEALED_OnEnterState()
 	{
+		// Play healing animation
 	}
 
 	void HEALED_Update()
 	{
-		if (Input.GetKeyDown (KeyCode.W))
-			currentState = GameStates.DEAD;
+
 	}
 
 	void DEAD_OnEnterState()
@@ -86,6 +99,11 @@ public class GameManager : StateMachineBase
 	void DEAD_Update()
 	{
 		
+	}
+
+	void OnPatientSeated()
+	{
+		currentState = GameStates.HEALING;
 	}
 
 	void OnPatientHealed()

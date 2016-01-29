@@ -4,11 +4,27 @@ using System.Collections;
 public class GameManager : StateMachineBase 
 {
 
-	public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END }
+	public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END, GAME_OVER }
 
 	public int currentDay;
 	public int currentPopulation;
 	public int initialPopulation;
+
+	public PatientController currentPatient;
+
+	private static GameManager instance;
+	
+	public static GameManager Instance
+	{
+		get
+		{
+			if (instance == null)
+			{
+				instance = GameObject.FindObjectOfType<GameManager>();
+			}
+			return instance;
+		}
+	} 
 
 	public void Start() {
 		currentState = GameStates.INTRO;
@@ -30,7 +46,8 @@ public class GameManager : StateMachineBase
 	{
 		// Patient animation
 		// Playing silhouette animation
-		// 
+		// Instantiate patient
+
 
 		Debug.Log ("Patient Enter");
 	}
@@ -60,7 +77,12 @@ public class GameManager : StateMachineBase
 
 	void DEAD_OnEnterState()
 	{
+		currentPopulation--;
+		if (currentPopulation <= 0) {
+			currentState = GameStates.GAME_OVER;
+		}
 	}
+
 	void DEAD_Update()
 	{
 		

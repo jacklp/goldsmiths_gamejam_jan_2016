@@ -21,6 +21,15 @@ sysinfo.txt
 /*.user
 /*.unityproj
 /*.booproj
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
  
 # ============ #
 # OS generated #

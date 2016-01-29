@@ -5,28 +5,48 @@ using System.Collections.Generic;
 public class InputController : MonoBehaviour {
 
     private StringBuffer inputBuffer;
+    private List<Illness> currentIllnesses;
+    private bool checkSequence;
 
     void Start() {
         inputBuffer = new StringBuffer();
+        currentIllnesses = new List<Illness>();
+
+        Illness i1 = new Illness("Arrow", "uuu", 2.3f);
+        Illness i2 = new Illness("Stinky", "rul", 2.3f);
+        Illness i3 = new Illness("Big Head", "rdlrdl", 2.6f);
+
+        currentIllnesses.Add(i1); currentIllnesses.Add(i2); currentIllnesses.Add(i3);
+
+        checkSequence = false;
     }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
             inputBuffer.AddKey('r');
             inputBuffer.PrintBuffer();
+            checkSequence = true;
         } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             inputBuffer.AddKey('l');
             inputBuffer.PrintBuffer();
+            checkSequence = true;
         } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
             inputBuffer.AddKey('u');
             inputBuffer.PrintBuffer();
+            checkSequence = true;
         } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
             inputBuffer.AddKey('d');
             inputBuffer.PrintBuffer();
+            checkSequence = true;
         }
 
-        if (inputBuffer.CheckSequence("uuu", 3.0f)) {
-            Debug.Log("***** FOUND SEQUENCE *****");
+        if (checkSequence) {
+            foreach (Illness i in currentIllnesses) {
+                if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
+                    Debug.Log("********* Found combo: " + i.GetCombo());
+                }
+            }
+            checkSequence = false;
         }
 
     }

@@ -19,12 +19,18 @@ public class InputController : MonoBehaviour {
         currentIllnesses = new List<Illness>();
         illnessesDef = new List<Illness>();
 
-        illnessesDef.Add(new Illness("Arrow", "ddd", 1.3f));
-        illnessesDef.Add(new Illness("Arrow", "ddd", 1.3f));
-        illnessesDef.Add(new Illness("Arrow", "ddd", 1.3f));
-        illnessesDef.Add(new Illness("Arrow", "uuu", 1.3f));
-        illnessesDef.Add(new Illness("Arrow", "uuu", 1.3f));
-        illnessesDef.Add(new Illness("Arrow", "uuu", 1.3f));
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
+        /*illnessesDef.Add(new Illness("Arrow", "dulr", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "durlurl", 0.6f));
+        illnessesDef.Add(new Illness("Arrow", "dddd", 0.3f));
+        illnessesDef.Add(new Illness("Arrow", "dudulru", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "duurul", 0.4f));*/
+
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
 
         gameManager = GetComponent<GameManager>();
 
@@ -48,6 +54,7 @@ public class InputController : MonoBehaviour {
 
         if (checkSequence) {
             int removeIndex = -1;
+            inputBuffer.PrintBuffer();
             foreach (Illness i in currentIllnesses) {
                 if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
                     Debug.Log("********* Found combo: " + i.GetCombo());
@@ -77,7 +84,6 @@ public class InputController : MonoBehaviour {
 
         int day = gameManager.currentDay;
         int nrIllnesses = UnityEngine.Random.Range(Mathf.Max(1, day / 3), Mathf.Max(1, day / 2));
-        nrIllnesses = 3;
         nrIllnesses = (nrIllnesses > 6) ? 6 : nrIllnesses;
         int limit = 5;
         for (uint i = 0; i < nrIllnesses; ++i) {

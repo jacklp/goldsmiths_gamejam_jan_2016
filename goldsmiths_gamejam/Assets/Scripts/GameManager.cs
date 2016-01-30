@@ -29,6 +29,7 @@ public class GameManager : StateMachineBase {
     public PatientController patient2;
     public PatientController patient3;
     private PatientController currentPatient;
+	private float patientTimer;
 
     private Vector3 pat1Pos;
     private Vector3 pat2Pos;
@@ -118,21 +119,24 @@ public class GameManager : StateMachineBase {
     /************************************** HEALING - START **************************************/
 
     void HEALING_OnEnterState() {
+		patientTimer = 100;
         inputController.successComboEvent += OnPatientHealed;
         comboUI.AddCombo(inputController.GetTopCombo());
     }
-
+		
     void HEALING_Update() {
+
+		if (patientTimer == 0) {
+			currentPatient.Die();
+			currentState = GameStates.DEAD;	
+		} else {
+			patientTimer--;
+		}
+
         if (Input.GetKeyDown(KeyCode.Q)) {
             currentPatient.Heal();
             currentState = GameStates.HEALED;
         }
-
-        if (Input.GetKeyDown(KeyCode.W)) {
-            currentPatient.Die();
-            currentState = GameStates.DEAD;
-        }
-            
     }
 
     void HEALING_OnExitState() {

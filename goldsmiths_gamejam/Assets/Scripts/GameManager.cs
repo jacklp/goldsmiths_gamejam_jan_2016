@@ -22,6 +22,7 @@ public class GameManager : StateMachineBase {
     public GameObject gameHUD;
     private GameObject dayIntroSplashScreen;
     private GameObject dayEndSplashScreen;
+    private GameObject patientBar;
 
     // Vars for the battle
     public int currentDay;
@@ -48,6 +49,7 @@ public class GameManager : StateMachineBase {
     private float dayEnd;
     public float DayEnd { get { return dayEnd; } }
     public float patientTimeOut = 5.0f;
+    public float patientTime;
 
     private int hardMode;
 
@@ -83,7 +85,10 @@ public class GameManager : StateMachineBase {
 
         dayIntroSplashScreen = GameObject.Find("DayIntroSplashScreen");
         dayEndSplashScreen = GameObject.Find("DayEndSplashScreen");
+        patientBar = GameObject.Find("PatientTime");
         dayEndSplashScreen.SetActive(false);
+        patientBar.SetActive(false);
+
 
         currentState = GameStates.INTRO;
     }
@@ -160,10 +165,12 @@ public class GameManager : StateMachineBase {
 
     void HEALING_OnEnterState() {
         comboUI.enabled = true;
+        patientTime = patientTimeOut;
         inputController.successComboEvent += OnPatientHealed;
         comboUI.AddCombo(inputController.GetTopCombo());
+        patientBar.SetActive(true);
     }
-
+    /*
     IEnumerator HEALING_EnterState() {
         yield return new WaitForSeconds(patientTimeOut);
         if ((GameStates)currentState == GameStates.HEALING) {
@@ -171,8 +178,15 @@ public class GameManager : StateMachineBase {
             currentState = GameStates.DEAD;
         }
     }
-
+    */
     void HEALING_Update() {
+
+        patientTime -= Time.deltaTime;
+        if(patientTime <= 0.0f) {
+            currentPatient.Die();
+            currentState = GameStates.DEAD;
+        }
+
         if (Input.GetKeyDown(KeyCode.Q)) {
             currentPatient.Heal();
             currentState = GameStates.HEALED;
@@ -189,6 +203,8 @@ public class GameManager : StateMachineBase {
         comboUI.enabled = false;
         comboUI.ClearChildren();
         inputController.successComboEvent -= OnPatientHealed;
+        patientBar.SetActive(false);
+
     }
 
     /************************************** HEALED **************************************/

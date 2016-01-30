@@ -2854,7 +2854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &517126075
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3516,7 +3516,7 @@ MonoBehaviour:
   patient2: {fileID: 1232414641}
   patient3: {fileID: 1944875052}
   stateText: {fileID: 2070380056}
-  dayLengh: 30
+  dayLengh: 2000
   patientTimeOut: 5
 --- !u!4 &832612929
 Transform:
@@ -3826,7 +3826,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1322689023
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4300,6 +4300,92 @@ Transform:
   m_Children: []
   m_Father: {fileID: 96178736}
   m_RootOrder: 2
+--- !u!1001 &1865055307
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_Pivot.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22430378, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100548, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+      propertyPath: m_Name
+      value: DayEndSplashScreen
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f31e86c4f5301dc419cf0bab0dde3541, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1933495609
 GameObject:
   m_ObjectHideFlags: 0

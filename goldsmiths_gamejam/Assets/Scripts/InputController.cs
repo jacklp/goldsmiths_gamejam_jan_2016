@@ -144,6 +144,7 @@ public class InputController : MonoBehaviour {
             }
 
             if (buffer[0].GetTime() - buffer[combo.Length - 1].GetTime() > time) {
+                ComboUI.Instance.ClearColors();
                 return false;
             }
 

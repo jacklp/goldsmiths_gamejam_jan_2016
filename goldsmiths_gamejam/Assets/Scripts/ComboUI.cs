@@ -25,6 +25,7 @@ public class ComboUI : MonoBehaviour {
 
     void Update() {
         int index = currentCombo.Length - currentPos - 1;
+        if (index < 0) { return; }
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
             if (currentCombo[index] == 'r') {
                 ColorGreen();
@@ -44,6 +45,7 @@ public class ComboUI : MonoBehaviour {
                 ClearColors();
             }
         } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            Debug.Log("INDEX : " + index + " COMBOLEN " +currentCombo.Length);
             if (currentCombo[index] == 'd') {
                 ColorGreen();
             } else {
@@ -52,7 +54,7 @@ public class ComboUI : MonoBehaviour {
         }
     }
 
-    private void ClearColors() {
+    public void ClearColors() {
         currentPos = 0;
         for (int i = 0; i < transform.childCount; ++i) {
             transform.GetChild(i).gameObject.GetComponent<Image>().color = Color.white;
@@ -62,6 +64,7 @@ public class ComboUI : MonoBehaviour {
     private void ColorGreen() {
         transform.GetChild(currentPos).gameObject.GetComponent<Image>().color = Color.green;
         ++currentPos;
+
     }
 
     public void AddCombo(string combo) {

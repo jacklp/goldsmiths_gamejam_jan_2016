@@ -126,7 +126,8 @@ public class GameManager : StateMachineBase {
 
         yield return new WaitForSeconds(2.0f);
 
-
+        currentDayDead = 0;
+        currentDayHealed = 0;
 
         currentState = GameStates.PATIENT_ENTER;
     }
@@ -195,6 +196,7 @@ public class GameManager : StateMachineBase {
     void HEALED_OnEnterState() {
         // Play healing animation
         ++healedPopulation;
+        ++currentDayHealed;
         --illPopulation;
 
         currentPatient.exitReachedEvent += OnPatientLeft;
@@ -230,6 +232,7 @@ public class GameManager : StateMachineBase {
     void DEAD_OnEnterState() {
         --currentPopulation;
         --illPopulation;
+        ++currentDayDead;
         currentPatient.deathExitReachedEvent += OnPatientDied;
 
         if (Time.time >= dayEnd || processedPatients <= 0) {
@@ -248,7 +251,8 @@ public class GameManager : StateMachineBase {
 
     /************************************** DAY - END  **************************************/
 
-    IEnumerator DAY_END_EnterState() {
+    //IEnumerator DAY_END_EnterState() {
+    public void DAY_END_OnEnterState() {
 
         money = money - currentDayDead < 0 ? 0 : money - currentDayDead;
         money = money + currentDayHealed;
@@ -258,15 +262,17 @@ public class GameManager : StateMachineBase {
         gameHUD.SetActive(false);
         dayEndSplashScreen.SetActive(true);
 
-        yield return new WaitForSeconds(3.0f);
+        //yield return new WaitForSeconds(3.0f);
 
         ++currentDay;
         currentPopulation -= illPopulation;
         if (currentPopulation <= 0) {
             currentState = GameStates.GAME_OVER;
-        } else {
+        } 
+        
+        /*else {
             currentState = GameStates.INTRO;
-        }
+        }*/
     }
 
     void DAY_END_OnExitState() {
@@ -303,6 +309,12 @@ public class GameManager : StateMachineBase {
         if ((GameStates)currentState == GameStates.DEAD) {
             currentState = GameStates.PATIENT_ENTER;
         }
+    }
+
+    public void OnMaskBought(int mask)
+    {
+        if ((GameStates)currentState == GameStates.DAY_END)
+            currentState = GameStates.INTRO;
     }
 
 }

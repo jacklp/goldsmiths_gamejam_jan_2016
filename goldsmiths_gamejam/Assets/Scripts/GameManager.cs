@@ -18,6 +18,9 @@ public class GameManager : StateMachineBase {
     public int healedPopulation;
     public int processedPatients;
 
+    // UI References
+    private GameObject daySplashScreen;
+
     // Vars for the battle
     public int currentDay;
     public int currentDayHealed;
@@ -42,6 +45,8 @@ public class GameManager : StateMachineBase {
     public float dayLengh = 60.0f;
     private float dayEnd;
 
+    public float patientTimeOut = 5.0f;
+
     public static GameManager Instance {
         get {
             if (instance == null) {
@@ -63,6 +68,8 @@ public class GameManager : StateMachineBase {
         pat3Pos = patient3.transform.position;
 
         currentPopulation = initialPopulation;
+
+        daySplashScreen = GameObject.Find("DaySplashScreen");
 
         currentState = GameStates.INTRO;
     }
@@ -90,11 +97,18 @@ public class GameManager : StateMachineBase {
         dayEnd = Time.time + dayLengh;
         illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(10, 25), currentPopulation);
         healedPopulation = 0;
+
+        daySplashScreen.SetActive(true);
+
         yield return new WaitForSeconds(2.0f);
+
+
         currentState = GameStates.PATIENT_ENTER;
     }
 
-
+    void INTRO_OnExitState() {
+        daySplashScreen.SetActive(false);
+    }
     /************************************** PATIENT - ENTER **************************************/
 
     void PATIENT_ENTER_OnEnterState() {
@@ -120,6 +134,14 @@ public class GameManager : StateMachineBase {
     void HEALING_OnEnterState() {
         inputController.successComboEvent += OnPatientHealed;
         comboUI.AddCombo(inputController.GetTopCombo());
+    }
+
+    IEnumerator HEALING_EnterState() {
+        yield return new WaitForSeconds(patientTimeOut);
+        if ((GameStates)currentState == GameStates.HEALING) {
+            currentPatient.Die();
+            currentState = GameStates.DEAD;
+        }
     }
 
     void HEALING_Update() {

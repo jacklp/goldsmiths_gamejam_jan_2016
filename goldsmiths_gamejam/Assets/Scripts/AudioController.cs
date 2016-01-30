@@ -8,8 +8,8 @@ public class AudioController : MonoBehaviour {
 
 	void Start () {
         float volume = PlayerPrefs.GetFloat("volume");
-        audio1.volume = volume;
-        audio2.volume = volume;
+        audio1.volume = volume/10;
+        audio2.volume = volume/10;
 	}
 	
 }

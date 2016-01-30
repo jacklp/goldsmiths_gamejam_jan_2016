@@ -4804,6 +4804,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 732426109}
   m_RootOrder: 0
+--- !u!1 &681201378 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 151430, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}
+  m_PrefabInternal: {fileID: 889105819}
+--- !u!111 &681201379
+Animation:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 681201378}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: b4e4a44056211a744acbd6b163e64a3c, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: b4e4a44056211a744acbd6b163e64a3c, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!225 &681201380
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 681201378}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &691227660 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 86529591548ded94d8a8d08f46ec4d72, type: 3}

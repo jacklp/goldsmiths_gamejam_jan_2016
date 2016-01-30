@@ -3,250 +3,241 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class GameManager : StateMachineBase 
-{
+public class GameManager : StateMachineBase {
 
-	public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END, GAME_OVER }
-	InputController inputController;
+    public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END, GAME_OVER }
+    private InputController inputController;
 
-	// Vars for the War
-	public int currentPopulation;
-	public int initialPopulation;
+    // Vars for the War
+    public int currentPopulation;
+    public int initialPopulation;
 
-	// Update every day
-	public int illPopulation;
-	public int healedPopulation;
+    // Update every day
+    public int illPopulation;
+    public int healedPopulation;
     public int processedPatients;
 
-	// Vars for the battle
-	public int currentDay;
-	public int currentDayHealed;
-	public int currentDayDead;
-	public int currentMask;
-	public int money;
+    // Vars for the battle
+    public int currentDay;
+    public int currentDayHealed;
+    public int currentDayDead;
+    public int currentMask;
+    public int money;
 
-	public PatientController patient1;
+    public PatientController patient1;
     public PatientController patient2;
     public PatientController patient3;
     private PatientController currentPatient;
 
-	private Vector3 pat1Pos;
-	private Vector3 pat2Pos;
-	private Vector3 pat3Pos;
+    private Vector3 pat1Pos;
+    private Vector3 pat2Pos;
+    private Vector3 pat3Pos;
 
-	private static GameManager instance;
-	public Text stateText;
+    private static GameManager instance;
+    public Text stateText;
 
     private Queue<PatientController> patients;
 
-	public float dayLengh = 60.0f;
-	private float dayEnd;
+    public float dayLengh = 60.0f;
+    private float dayEnd;
 
-	public static GameManager Instance
-	{
-		get
-		{
-			if (instance == null)
-			{
-				instance = GameObject.FindObjectOfType<GameManager>();
-			}
-			return instance;
-		}
-	} 
+    public static GameManager Instance {
+        get {
+            if (instance == null) {
+                instance = GameObject.FindObjectOfType<GameManager>();
+            }
+            return instance;
+        }
+    }
 
-	public void Start() {
-		inputController = GetComponent<InputController> ();
+    public void Start() {
+        inputController = GetComponent<InputController>();
         currentDay = 1;
 
         patients = new Queue<PatientController>();
 
-		pat1Pos = patient1.transform.position;
-		pat2Pos = patient2.transform.position;
-		pat3Pos = patient3.transform.position;
+        pat1Pos = patient1.transform.position;
+        pat2Pos = patient2.transform.position;
+        pat3Pos = patient3.transform.position;
 
         currentPopulation = initialPopulation;
 
         currentState = GameStates.INTRO;
-	}
+    }
 
-	protected override void OnUpdate() {
-		stateText.text = currentState.ToString ();
-	}
+    protected override void OnUpdate() {
+        stateText.text = currentState.ToString();
+    }
 
-	IEnumerator INTRO_EnterState()
-	{
-		// Initialize stuff
-		// Current Day screen
-		// Instantiate stuff
-		// Reset stuff
-		patients.Clear ();
-		patients.Enqueue(patient1);
-		patients.Enqueue(patient2);
-		patients.Enqueue(patient3);
+    /************************************** DAY - START **************************************/
+
+    IEnumerator INTRO_EnterState() {
+        // Initialize stuff
+        // Current Day screen
+        // Instantiate stuff
+        // Reset stuff
+        patients.Clear();
+        patients.Enqueue(patient1);
+        patients.Enqueue(patient2);
+        patients.Enqueue(patient3);
 
         patient1.transform.position = pat1Pos;
         patient2.transform.position = pat2Pos;
         patient3.transform.position = pat3Pos;
 
-		dayEnd = Time.time + dayLengh;
-        //currentPopulation -= (illPopulation - healedPopulation);
+        dayEnd = Time.time + dayLengh;
         illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(10, 25), currentPopulation);
         healedPopulation = 0;
-		yield return new WaitForSeconds (2.0f);
-		currentState = GameStates.PATIENT_ENTER;
-	}
+        yield return new WaitForSeconds(2.0f);
+        currentState = GameStates.PATIENT_ENTER;
+    }
 
 
-	
-	void PATIENT_ENTER_OnEnterState()
-	{
-		// Patient animation
-		// Playing silhouette animation
-		// Instantiate patient
+    /************************************** PATIENT - ENTER **************************************/
+
+    void PATIENT_ENTER_OnEnterState() {
+        // Patient animation
+        // Playing silhouette animation
+        // Instantiate patient
         currentPatient = patients.Dequeue();
-		currentPatient.GoToSeat ();
+        currentPatient.GoToSeat();
 
         PatientController p = patients.Peek();
         p.GoToEntrance();
 
         GetComponent<InputController>().UpdateCurrentIllnesses();
 
-		Debug.Log ("Patient Enter");
-		currentPatient.seatReachedEvent += OnPatientSeated;
+        Debug.Log("Patient Enter");
+        currentPatient.seatReachedEvent += OnPatientSeated;
 
         --processedPatients;
-	}
+    }
 
-	void HEALING_OnEnterState()
-	{
-		inputController.successComboEvent += OnPatientHealed;
-	}
+    /************************************** HEALING - START **************************************/
 
-	void HEALING_Update()
-	{
-		if (Input.GetKeyDown (KeyCode.Q)) {
-			currentPatient.Heal();
-			currentState = GameStates.HEALED;
-		}
+    void HEALING_OnEnterState() {
+        inputController.successComboEvent += OnPatientHealed;
+    }
 
-		if (Input.GetKeyDown (KeyCode.W))
-			currentState = GameStates.DEAD;
-	}
+    void HEALING_Update() {
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            currentPatient.Heal();
+            currentState = GameStates.HEALED;
+        }
 
-	void HEALING_OnExitState() 
-	{
-		inputController.successComboEvent -= OnPatientHealed;
-	}
-    /*
-     * HEALED STATE START
-     */
-	void HEALED_OnEnterState()
-	{
-		// Play healing animation
+        if (Input.GetKeyDown(KeyCode.W)) {
+            currentPatient.Die();
+            currentState = GameStates.DEAD;
+        }
+            
+    }
+
+    void HEALING_OnExitState() {
+        inputController.successComboEvent -= OnPatientHealed;
+    }
+
+    /************************************** HEALED **************************************/
+
+    void HEALED_OnEnterState() {
+        // Play healing animation
         ++healedPopulation;
         --illPopulation;
 
         currentPatient.exitReachedEvent += OnPatientLeft;
-        if (Time.time >= dayEnd || processedPatients <= 0)
-        {
-			currentState = GameStates.DAY_END;
-		}
-	}
+        if (Time.time >= dayEnd || processedPatients <= 0) {
+            currentState = GameStates.DAY_END;
+        }
+    }
 
-	void HEALED_Update()
-	{
+    void HEALED_Update() {
 
-	}
+    }
 
     void HEALED_OnExitState() {
-		patients.Enqueue(currentPatient);
-		currentPatient.exitReachedEvent -= OnPatientLeft;
+        patients.Enqueue(currentPatient);
+        currentPatient.exitReachedEvent -= OnPatientLeft;
     }
-    /*
-     * HEALED STATE END
-     */
 
-    /*
-     * DEAD STATE START
-     */
-	IEnumerator DEAD_EnterState()
-	{
-		--currentPopulation;
+    /************************************** DEAD **************************************/
+
+    /*IEnumerator DEAD_EnterState() {
+        --currentPopulation;
         --illPopulation;
 
         yield return new WaitForSeconds(1.5f);
 
-        if (Time.time >= dayEnd || processedPatients <= 0)
-        {
-			currentState = GameStates.DAY_END;
-		}
-        else
-        {
+        if (Time.time >= dayEnd || processedPatients <= 0) {
+            currentState = GameStates.DAY_END;
+        } else {
             currentState = GameStates.PATIENT_ENTER;
         }
-	}
+    }*/
 
-	void DEAD_Update()
-	{
-		
-	}
+    void DEAD_OnEnterState() {
+        --currentPopulation;
+        --illPopulation;
+        currentPatient.deathExitReachedEvent += OnPatientDied;
+
+        if (Time.time >= dayEnd || processedPatients <= 0) {
+            currentState = GameStates.DAY_END;
+        }
+    }
+
+    void DEAD_Update() {
+
+    }
 
     void DEAD_OnExitState() {
-		patients.Enqueue(currentPatient);
-	}
-    /*
-     * DEAD STATE END
-     */
+        patients.Enqueue(currentPatient);
+        currentPatient.deathExitReachedEvent -= OnPatientDied;
+    }
 
-    /*
-     * DAY_END START
-     */
-	IEnumerator DAY_END_EnterState(){
-		
-		money = money - currentDayDead < 0 ?  0 : money - currentDayDead;
-		money = money + currentDayHealed;
-		
-		yield return new WaitForSeconds (3.0f);
+    /************************************** DAY - END  **************************************/
+
+    IEnumerator DAY_END_EnterState() {
+
+        money = money - currentDayDead < 0 ? 0 : money - currentDayDead;
+        money = money + currentDayHealed;
+
+        yield return new WaitForSeconds(3.0f);
 
         ++currentDay;
         currentPopulation -= illPopulation;
-        if (currentPopulation <= 0)
-        {
+        if (currentPopulation <= 0) {
             currentState = GameStates.GAME_OVER;
-        }
-        else
-        {
+        } else {
             currentState = GameStates.INTRO;
         }
-	}
-    /*
-     * DAY_END END
-     */
+    }
 
+    /************************************** CALL-BACKS  **************************************/
 
-	void OnPatientSeated()
-	{
-		currentState = GameStates.HEALING;
-	}
+    void OnPatientSeated() {
+        currentState = GameStates.HEALING;
+    }
 
-	void OnPatientHealed(bool finished)
-	{
+    void OnPatientHealed(bool finished) {
         if (finished) {
             currentState = GameStates.HEALED;
             currentPatient.Heal();
         } else {
             //flash
         }
-	}
-		
-	void OnPatientDead()
-	{
-		currentState = GameStates.DEAD;
-	}
+    }
+
+    void OnPatientDead() {
+        currentState = GameStates.DEAD;
+    }
 
     void OnPatientLeft() {
-        if((GameStates)currentState == GameStates.HEALED)
+        if ((GameStates)currentState == GameStates.HEALED)
             currentState = GameStates.PATIENT_ENTER;
+    }
+
+    void OnPatientDied() {
+        if ((GameStates)currentState == GameStates.DEAD) {
+            currentState = GameStates.PATIENT_ENTER;
+        }
     }
 
 }

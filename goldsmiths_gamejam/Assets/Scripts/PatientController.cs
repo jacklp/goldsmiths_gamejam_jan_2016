@@ -6,21 +6,24 @@ using System;
 public class PatientController : MonoBehaviour {
 
 	public Transform sittingPoint;
-	public Transform exitPoint;
+	public Transform healedExitPoint;
     public Transform entrancePoint;
+    public Transform deathExitPoint;
 
 	Vector3 targetPos;
 
 	public event Action seatReachedEvent;
     public event Action exitReachedEvent;
+    public event Action deathExitReachedEvent;
 
 	public float speed = 2.0f;
 
 	// Use this for initialization
 	void Start () {
-		sittingPoint = GameObject.Find ("Seat").transform;
-		exitPoint = GameObject.Find ("Exit").transform;
+		sittingPoint = GameObject.Find ("SeatPosition").transform;
+        healedExitPoint = GameObject.Find("HealedExit").transform;
         entrancePoint = GameObject.Find("TentEnterPosition").transform;
+        deathExitPoint = GameObject.Find("DeadExit").transform;
 
 		targetPos = sittingPoint.position;
 		targetPos.y = transform.position.y;
@@ -38,7 +41,7 @@ public class PatientController : MonoBehaviour {
 
 	IEnumerator GotToPos(Vector3 pos, Action onFinish = null)
 	{
-		pos.y = transform.position.y;
+		//pos.y = transform.position.y;
 		while (Vector3.Distance(transform.position, pos) > 0.1f) {
 			transform.position += (pos - transform.position).normalized * Time.deltaTime * speed;
 			yield return null;
@@ -55,7 +58,7 @@ public class PatientController : MonoBehaviour {
 
 	public void Heal() {
 		// Walk Away
-		StartCoroutine (GotToPos (exitPoint.position, () => {
+        StartCoroutine(GotToPos(healedExitPoint.position, () => {
             Debug.Log("Patient Healed!");
             if (exitReachedEvent != null) {
                 exitReachedEvent();
@@ -63,6 +66,17 @@ public class PatientController : MonoBehaviour {
             }
         }));
 	}
+
+    public void Die() {
+        StartCoroutine(GotToPos(deathExitPoint.position, () => {
+            Debug.Log("Patient Died!");
+            if (deathExitReachedEvent != null) {
+                deathExitReachedEvent();
+                transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
+            }
+        }));
+    }
+
 	/*
 	public void OnTriggerEnter(Collider other) {
 		if (other.name == sittingPoint.name)

@@ -8,9 +8,20 @@ public class GameManager : StateMachineBase
 	public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END, GAME_OVER }
 	InputController inputController;
 
-	public int currentDay;
+	// Vars for the War
 	public int currentPopulation;
 	public int initialPopulation;
+
+
+
+	// Vars for the battle
+	public int currentDay;
+	public int currentDayHealed;
+	public int currentDayDead;
+	public int currentMask;
+	public int money;
+
+
 
 	public PatientController currentPatient;
 
@@ -109,6 +120,12 @@ public class GameManager : StateMachineBase
 		
 	}
 
+	void DAY_END_OnEnterState(){
+
+		money = money - currentDayDead < 0 ?  0 : money - currentDayDead;
+		money = money + currentDayHealed;
+	}
+
 	void OnPatientSeated()
 	{
 		currentState = GameStates.HEALING;
@@ -125,4 +142,6 @@ public class GameManager : StateMachineBase
 	{
 		currentState = GameStates.DEAD;
 	}
+
+
 }

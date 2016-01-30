@@ -45,12 +45,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Fader.cs" />
-     <Compile Include="Assets\LightFlicker.cs" />
+     <Compile Include="Assets\DayEndSplashScreen.cs" />
+     <Compile Include="Assets\DayIntroSplashScreen.cs" />
+     <Compile Include="Assets\Scripts\AudioController.cs" />
      <Compile Include="Assets\Scripts\ComboUI.cs" />
+     <Compile Include="Assets\Scripts\DayProgressBar.cs" />
+     <Compile Include="Assets\Scripts\Fader.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Illness.cs" />
      <Compile Include="Assets\Scripts\InputController.cs" />
+     <Compile Include="Assets\Scripts\LightFlicker.cs" />
+     <Compile Include="Assets\Scripts\MenuController.cs" />
      <Compile Include="Assets\Scripts\PatientController.cs" />
      <Compile Include="Assets\Scripts\ScorePanel.cs" />
      <Compile Include="Assets\Scripts\StateMachine\StateMachineBase.cs" />

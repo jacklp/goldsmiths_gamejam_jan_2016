@@ -10,6 +10,11 @@ public class PatientController : MonoBehaviour {
     public Transform entrancePoint;
     public Transform deathExitPoint;
 
+	public AudioSource audio1;
+	public AudioSource audio2;
+	public AudioSource audio3;
+	public AudioSource audio4;
+
 	Vector3 targetPos;
 
 	public event Action seatReachedEvent;
@@ -20,6 +25,7 @@ public class PatientController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		sittingPoint = GameObject.Find ("SeatPosition").transform;
         healedExitPoint = GameObject.Find("HealedExit").transform;
         entrancePoint = GameObject.Find("TentEnterPosition").transform;
@@ -32,6 +38,7 @@ public class PatientController : MonoBehaviour {
 
 	public void GoToSeat()
 	{
+		audio1.Play ();
 		StartCoroutine (GotToPos (sittingPoint.position, OnSeatReached));
 	}
 
@@ -57,6 +64,8 @@ public class PatientController : MonoBehaviour {
 	}
 
 	public void Heal() {
+		audio2.Stop ();
+		audio4.Play ();
 		// Walk Away
         StartCoroutine(GotToPos(healedExitPoint.position, () => {
             Debug.Log("Patient Healed!");
@@ -68,6 +77,8 @@ public class PatientController : MonoBehaviour {
 	}
 
     public void Die() {
+		audio2.Stop ();
+		audio3.Play ();
         StartCoroutine(GotToPos(deathExitPoint.position, () => {
             Debug.Log("Patient Died!");
             if (deathExitReachedEvent != null) {
@@ -87,6 +98,8 @@ public class PatientController : MonoBehaviour {
 	public void OnSeatReached() 
 	{
 		if (seatReachedEvent != null)
+			audio1.Stop ();
+			audio2.Play ();
 			seatReachedEvent ();
 	}
 	

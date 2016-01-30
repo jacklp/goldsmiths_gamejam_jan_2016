@@ -49,6 +49,8 @@ public class GameManager : StateMachineBase {
     public float DayEnd { get { return dayEnd; } }
     public float patientTimeOut = 5.0f;
 
+    private int hardMode;
+
     public static GameManager Instance {
         get {
             if (instance == null) {
@@ -64,6 +66,12 @@ public class GameManager : StateMachineBase {
         comboUI.enabled = false;
 
         currentDay = 1;
+        hardMode = PlayerPrefs.GetInt("hardmode");
+        if (hardMode == 1) {
+            dayLengh = 45.0f;
+        } else {
+            dayLengh = 60.0f;
+        }
 
         patients = new Queue<PatientController>();
 
@@ -105,7 +113,12 @@ public class GameManager : StateMachineBase {
         patient3.transform.position = pat3Pos;
 
         dayEnd = Time.time + dayLengh;
-        illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(10, 25), currentPopulation);
+        if (hardMode == 1) {
+            illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(20, 30), currentPopulation);
+        } else {
+            illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(10, 20), currentPopulation);
+        }
+        
         healedPopulation = 0;
 
         dayIntroSplashScreen.SetActive(true);

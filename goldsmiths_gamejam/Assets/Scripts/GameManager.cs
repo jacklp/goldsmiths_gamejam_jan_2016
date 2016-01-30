@@ -7,6 +7,7 @@ public class GameManager : StateMachineBase {
 
     public enum GameStates { INTRO, PATIENT_ENTER, HEALING, HEALED, DEAD, DAY_END, GAME_OVER }
     private InputController inputController;
+    private ComboUI comboUI;
 
     // Vars for the War
     public int currentPopulation;
@@ -52,6 +53,7 @@ public class GameManager : StateMachineBase {
 
     public void Start() {
         inputController = GetComponent<InputController>();
+        comboUI = ComboUI.Instance;
         currentDay = 1;
 
         patients = new Queue<PatientController>();
@@ -117,6 +119,7 @@ public class GameManager : StateMachineBase {
 
     void HEALING_OnEnterState() {
         inputController.successComboEvent += OnPatientHealed;
+        comboUI.AddCombo(inputController.GetTopCombo());
     }
 
     void HEALING_Update() {
@@ -133,6 +136,7 @@ public class GameManager : StateMachineBase {
     }
 
     void HEALING_OnExitState() {
+        comboUI.ClearChildren();
         inputController.successComboEvent -= OnPatientHealed;
     }
 

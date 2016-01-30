@@ -19,18 +19,12 @@ public class InputController : MonoBehaviour {
         currentIllnesses = new List<Illness>();
         illnessesDef = new List<Illness>();
 
-        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
-        /*illnessesDef.Add(new Illness("Arrow", "dulr", 0.5f));
-        illnessesDef.Add(new Illness("Arrow", "durlurl", 0.6f));
-        illnessesDef.Add(new Illness("Arrow", "dddd", 0.3f));
-        illnessesDef.Add(new Illness("Arrow", "dudulru", 0.5f));
-        illnessesDef.Add(new Illness("Arrow", "duurul", 0.4f));*/
-
-        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
-        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
-        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
-        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
-        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.5f));
+        illnessesDef.Add(new Illness("Arrow", "uuuu", 0.8f));
+        illnessesDef.Add(new Illness("Arrow", "dulr", 0.8f));
+        illnessesDef.Add(new Illness("Arrow", "durlurl", 1.5f));
+        illnessesDef.Add(new Illness("Arrow", "dddd", 0.8f));
+        illnessesDef.Add(new Illness("Arrow", "dudulru", 1.8f));
+        illnessesDef.Add(new Illness("Arrow", "duurul", 1.7f));
 
         gameManager = GetComponent<GameManager>();
 
@@ -55,14 +49,16 @@ public class InputController : MonoBehaviour {
         if (checkSequence) {
             int removeIndex = -1;
             inputBuffer.PrintBuffer();
-            foreach (Illness i in currentIllnesses) {
-                if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
-                    Debug.Log("********* Found combo: " + i.GetCombo());
-                    removeIndex = currentIllnesses.IndexOf(i);
-					if(successComboEvent != null)
-					{
-						successComboEvent(false);
-					}
+            if (currentIllnesses.Count <= 0) {
+                checkSequence = false;
+                return;
+            }
+            Illness i = currentIllnesses[0];
+            if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
+                Debug.Log("********* Found combo: " + i.GetCombo());
+                removeIndex = currentIllnesses.IndexOf(i);
+                if (successComboEvent != null) {
+                    successComboEvent(false);
                 }
             }
 
@@ -72,6 +68,9 @@ public class InputController : MonoBehaviour {
                     if (successComboEvent != null) {
                         successComboEvent(true);
                     }
+                } else {
+                    ComboUI.Instance.ClearChildren();
+                    ComboUI.Instance.AddCombo(currentIllnesses[0].GetCombo());
                 }
             }
             checkSequence = false;
@@ -94,6 +93,13 @@ public class InputController : MonoBehaviour {
             illnessesDef[5] = temp;
             --index;
         }
+    }
+
+    public string GetTopCombo() {
+        if (currentIllnesses.Count > 0) {
+            return currentIllnesses[0].GetCombo();
+        }
+        return "";
     }
 
     private class StringBuffer {
@@ -138,6 +144,7 @@ public class InputController : MonoBehaviour {
             }
 
             if (buffer[0].GetTime() - buffer[combo.Length - 1].GetTime() > time) {
+                ComboUI.Instance.ClearColors();
                 return false;
             }
 

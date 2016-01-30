@@ -23,6 +23,8 @@ public class PatientController : MonoBehaviour {
 
 	public float speed = 2.0f;
 
+    private ParticleSystem particleSystem;
+
 	// Use this for initialization
 	void Start () {
 
@@ -30,6 +32,10 @@ public class PatientController : MonoBehaviour {
         healedExitPoint = GameObject.Find("HealedExit").transform;
         entrancePoint = GameObject.Find("TentEnterPosition").transform;
         deathExitPoint = GameObject.Find("DeadExit").transform;
+
+        particleSystem = GameObject.Find("PurplePS").GetComponent<ParticleSystem>();
+        particleSystem.playOnAwake = true;
+        //particleSystem.gameObject.SetActive(false);
 
 		targetPos = sittingPoint.position;
 		targetPos.y = transform.position.y;
@@ -66,6 +72,7 @@ public class PatientController : MonoBehaviour {
 	public void Heal() {
 		audio2.Stop ();
 		audio4.Play ();
+        particleSystem.gameObject.SetActive(true);
 		// Walk Away
         StartCoroutine(GotToPos(healedExitPoint.position, () => {
             Debug.Log("Patient Healed!");

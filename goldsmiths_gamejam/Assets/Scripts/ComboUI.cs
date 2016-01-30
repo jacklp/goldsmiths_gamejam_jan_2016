@@ -11,6 +11,9 @@ public class ComboUI : MonoBehaviour {
 
     private static ComboUI instance;
 
+    private string currentCombo = "";
+    private int currentPos;
+
     public static ComboUI Instance {
         get {
             if (instance == null) {
@@ -21,14 +24,48 @@ public class ComboUI : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            AddCombo("lur");
-        } else if (Input.GetKeyDown(KeyCode.T)) {
-            ClearChildren();
+        int index = currentCombo.Length - currentPos - 1;
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            if (currentCombo[index] == 'r') {
+                ColorGreen();
+            } else {
+                ClearColors();
+            }
+        } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            if (currentCombo[index] == 'l') {
+                ColorGreen();
+            } else {
+                ClearColors();
+            }
+        } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            if (currentCombo[index] == 'u') {
+                ColorGreen();
+            } else {
+                ClearColors();
+            }
+        } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            if (currentCombo[index] == 'd') {
+                ColorGreen();
+            } else {
+                ClearColors();
+            }
         }
     }
 
+    private void ClearColors() {
+        currentPos = 0;
+        for (int i = 0; i < transform.childCount; ++i) {
+            transform.GetChild(i).gameObject.GetComponent<Image>().color = Color.white;
+        }
+    }
+
+    private void ColorGreen() {
+        transform.GetChild(currentPos).gameObject.GetComponent<Image>().color = Color.green;
+        ++currentPos;
+    }
+
     public void AddCombo(string combo) {
+        currentCombo = combo;
         for (int i = combo.Length-1; i >= 0; --i) {
             if (combo[i] == 'l') {
                 GameObject arrow = Instantiate(leftPrefab) as GameObject;
@@ -50,5 +87,6 @@ public class ComboUI : MonoBehaviour {
         for (int i = 0; i < transform.childCount; ++i) {
             Destroy(transform.GetChild(i).gameObject);
         }
+        currentPos = 0;
     }
 }

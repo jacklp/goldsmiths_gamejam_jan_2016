@@ -7,10 +7,12 @@ public class PatientController : MonoBehaviour {
 
 	public Transform sittingPoint;
 	public Transform exitPoint;
+    public Transform entrancePoint;
 
 	Vector3 targetPos;
 
 	public event Action seatReachedEvent;
+    public event Action exitReachedEvent;
 
 	public float speed = 2.0f;
 
@@ -18,6 +20,8 @@ public class PatientController : MonoBehaviour {
 	void Start () {
 		sittingPoint = GameObject.Find ("Seat").transform;
 		exitPoint = GameObject.Find ("Exit").transform;
+        entrancePoint = GameObject.Find("TentEnterPosition").transform;
+
 		targetPos = sittingPoint.position;
 		targetPos.y = transform.position.y;
 		// Move towards the sitting position
@@ -28,15 +32,22 @@ public class PatientController : MonoBehaviour {
 		StartCoroutine (GotToPos (sittingPoint.position, OnSeatReached));
 	}
 
-	IEnumerator GotToPos(Vector3 pos, Action onFinish)
+    public void GoToEntrance() {
+        StartCoroutine(GotToPos(entrancePoint.position));
+    }
+
+	IEnumerator GotToPos(Vector3 pos, Action onFinish = null)
 	{
 		pos.y = transform.position.y;
 		while (Vector3.Distance(transform.position, pos) > 0.1f) {
 			transform.position += (pos - transform.position).normalized * Time.deltaTime * speed;
 			yield return null;
 		}
-		onFinish ();
+        if (onFinish != null) {
+            onFinish();
+        }
 	}
+
 	// Update is called once per frame
 	void Update () {
 		
@@ -44,7 +55,13 @@ public class PatientController : MonoBehaviour {
 
 	public void Heal() {
 		// Walk Away
-		StartCoroutine (GotToPos (exitPoint.position, () => {Debug.Log("Patient Healed!");}));
+		StartCoroutine (GotToPos (exitPoint.position, () => {
+            Debug.Log("Patient Healed!");
+            if (exitReachedEvent != null) {
+                exitReachedEvent();
+                transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
+            }
+        }));
 	}
 	/*
 	public void OnTriggerEnter(Collider other) {

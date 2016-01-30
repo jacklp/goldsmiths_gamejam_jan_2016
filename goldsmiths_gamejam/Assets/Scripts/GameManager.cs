@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameManager : StateMachineBase 
 {
@@ -12,10 +13,19 @@ public class GameManager : StateMachineBase
 	public int currentPopulation;
 	public int initialPopulation;
 
-	public PatientController currentPatient;
+    // Update every day
+    private int illPopulation;
+    private int healedPopulation;
+
+	public PatientController patient1;
+    public PatientController patient2;
+    public PatientController patient3;
+    private PatientController currentPatient;
 
 	private static GameManager instance;
 	public Text stateText;
+
+    private Queue<PatientController> patients;
 
 
 
@@ -34,6 +44,12 @@ public class GameManager : StateMachineBase
 	public void Start() {
 		inputController = GetComponent<InputController> ();
 		currentState = GameStates.INTRO;
+        currentDay = 1;
+
+        patients = new Queue<PatientController>();
+        patients.Enqueue(patient1);
+        patients.Enqueue(patient2);
+        patients.Enqueue(patient3);
 	}
 
 	protected override void OnUpdate() {
@@ -46,10 +62,11 @@ public class GameManager : StateMachineBase
 		// Current Day screen
 		// Instantiate stuff
 		// Reset stuff
+        currentPopulation -= (illPopulation - healedPopulation);
+        illPopulation = Mathf.Min(UnityEngine.Random.Range(10, 25), currentPopulation);
+        healedPopulation = 0;
 		yield return new WaitForSeconds (2.0f);
 		currentState = GameStates.PATIENT_ENTER;
-
-
 	}
 
 
@@ -59,7 +76,13 @@ public class GameManager : StateMachineBase
 		// Patient animation
 		// Playing silhouette animation
 		// Instantiate patient
+        currentPatient = patients.Dequeue();
 		currentPatient.GoToSeat ();
+
+        PatientController p = patients.Peek();
+        p.GoToEntrance();
+
+        GetComponent<InputController>().UpdateCurrentIllnesses();
 
 		Debug.Log ("Patient Enter");
 		currentPatient.seatReachedEvent += OnPatientSeated;
@@ -89,12 +112,18 @@ public class GameManager : StateMachineBase
 	void HEALED_OnEnterState()
 	{
 		// Play healing animation
+        currentPatient.exitReachedEvent += OnPatientLeft;
 	}
 
 	void HEALED_Update()
 	{
 
 	}
+
+    void HEALED_OnExitState() {
+        patients.Enqueue(currentPatient);
+        currentPatient.exitReachedEvent -= OnPatientLeft;
+    }
 
 	void DEAD_OnEnterState()
 	{
@@ -109,15 +138,24 @@ public class GameManager : StateMachineBase
 		
 	}
 
+    void DEAD_OnExitState() {
+        patients.Enqueue(currentPatient);
+    }
+
 	void OnPatientSeated()
 	{
 		currentState = GameStates.HEALING;
 	}
 
-	void OnPatientHealed()
+	void OnPatientHealed(bool finished)
 	{
-		currentState = GameStates.HEALED;
-		currentPatient.Heal ();
+		
+        if (finished) {
+            currentState = GameStates.HEALED;
+            currentPatient.Heal();
+        } else {
+            //flash
+        }
 	}
 
 
@@ -125,4 +163,8 @@ public class GameManager : StateMachineBase
 	{
 		currentState = GameStates.DEAD;
 	}
+
+    void OnPatientLeft() {
+        currentState = GameStates.PATIENT_ENTER;
+    }
 }

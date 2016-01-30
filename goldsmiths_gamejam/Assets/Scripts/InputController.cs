@@ -49,14 +49,12 @@ public class InputController : MonoBehaviour {
         if (checkSequence) {
             int removeIndex = -1;
             inputBuffer.PrintBuffer();
-            foreach (Illness i in currentIllnesses) {
-                if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
-                    Debug.Log("********* Found combo: " + i.GetCombo());
-                    removeIndex = currentIllnesses.IndexOf(i);
-					if(successComboEvent != null)
-					{
-						successComboEvent(false);
-					}
+            Illness i = currentIllnesses[0];
+            if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
+                Debug.Log("********* Found combo: " + i.GetCombo());
+                removeIndex = currentIllnesses.IndexOf(i);
+                if (successComboEvent != null) {
+                    successComboEvent(false);
                 }
             }
 
@@ -66,6 +64,9 @@ public class InputController : MonoBehaviour {
                     if (successComboEvent != null) {
                         successComboEvent(true);
                     }
+                } else {
+                    ComboUI.Instance.ClearChildren();
+                    ComboUI.Instance.AddCombo(currentIllnesses[0].GetCombo());
                 }
             }
             checkSequence = false;

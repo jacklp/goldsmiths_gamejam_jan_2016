@@ -19,7 +19,9 @@ public class GameManager : StateMachineBase {
     public int processedPatients;
 
     // UI References
-    private GameObject daySplashScreen;
+    public GameObject gameHUD;
+    private GameObject dayIntroSplashScreen;
+    private GameObject dayEndSplashScreen;
 
     // Vars for the battle
     public int currentDay;
@@ -44,7 +46,7 @@ public class GameManager : StateMachineBase {
 
     public float dayLengh = 60.0f;
     private float dayEnd;
-
+    public float DayEnd { get { return dayEnd; } }
     public float patientTimeOut = 5.0f;
 
     public static GameManager Instance {
@@ -59,6 +61,8 @@ public class GameManager : StateMachineBase {
     public void Start() {
         inputController = GetComponent<InputController>();
         comboUI = ComboUI.Instance;
+        comboUI.enabled = false;
+
         currentDay = 1;
 
         patients = new Queue<PatientController>();
@@ -69,7 +73,9 @@ public class GameManager : StateMachineBase {
 
         currentPopulation = initialPopulation;
 
-        daySplashScreen = GameObject.Find("DaySplashScreen");
+        dayIntroSplashScreen = GameObject.Find("DayIntroSplashScreen");
+        dayEndSplashScreen = GameObject.Find("DayEndSplashScreen");
+        dayEndSplashScreen.SetActive(false);
 
         currentState = GameStates.INTRO;
     }
@@ -90,6 +96,10 @@ public class GameManager : StateMachineBase {
         patients.Enqueue(patient2);
         patients.Enqueue(patient3);
 
+        patient1.StopAllCoroutines();
+        patient2.StopAllCoroutines();
+        patient3.StopAllCoroutines();
+
         patient1.transform.position = pat1Pos;
         patient2.transform.position = pat2Pos;
         patient3.transform.position = pat3Pos;
@@ -98,16 +108,19 @@ public class GameManager : StateMachineBase {
         illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(10, 25), currentPopulation);
         healedPopulation = 0;
 
-        daySplashScreen.SetActive(true);
+        dayIntroSplashScreen.SetActive(true);
+        gameHUD.SetActive(false);
 
         yield return new WaitForSeconds(2.0f);
+
 
 
         currentState = GameStates.PATIENT_ENTER;
     }
 
     void INTRO_OnExitState() {
-        daySplashScreen.SetActive(false);
+        dayIntroSplashScreen.SetActive(false);
+        gameHUD.SetActive(true);
     }
     /************************************** PATIENT - ENTER **************************************/
 
@@ -132,6 +145,7 @@ public class GameManager : StateMachineBase {
     /************************************** HEALING - START **************************************/
 
     void HEALING_OnEnterState() {
+        comboUI.enabled = true;
         inputController.successComboEvent += OnPatientHealed;
         comboUI.AddCombo(inputController.GetTopCombo());
     }
@@ -158,6 +172,7 @@ public class GameManager : StateMachineBase {
     }
 
     void HEALING_OnExitState() {
+        comboUI.enabled = false;
         comboUI.ClearChildren();
         inputController.successComboEvent -= OnPatientHealed;
     }
@@ -225,6 +240,11 @@ public class GameManager : StateMachineBase {
         money = money - currentDayDead < 0 ? 0 : money - currentDayDead;
         money = money + currentDayHealed;
 
+        comboUI.ClearChildren();
+
+        gameHUD.SetActive(false);
+        dayEndSplashScreen.SetActive(true);
+
         yield return new WaitForSeconds(3.0f);
 
         ++currentDay;
@@ -235,6 +255,12 @@ public class GameManager : StateMachineBase {
             currentState = GameStates.INTRO;
         }
     }
+
+    void DAY_END_OnExitState() {
+        dayEndSplashScreen.SetActive(false);
+
+    }
+
 
     /************************************** CALL-BACKS  **************************************/
 

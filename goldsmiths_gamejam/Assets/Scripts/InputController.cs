@@ -49,6 +49,10 @@ public class InputController : MonoBehaviour {
         if (checkSequence) {
             int removeIndex = -1;
             inputBuffer.PrintBuffer();
+            if (currentIllnesses.Count <= 0) {
+                checkSequence = false;
+                return;
+            }
             Illness i = currentIllnesses[0];
             if (inputBuffer.CheckSequence(i.GetCombo(), i.GetTime())) {
                 Debug.Log("********* Found combo: " + i.GetCombo());

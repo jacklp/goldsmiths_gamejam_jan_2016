@@ -11,7 +11,7 @@ public class ScorePanel : MonoBehaviour {
 	Text moneyVal;
 
 
-	void Init(){
+	void OnEnable(){
 		
 		//Set the Dynamic Scores
 		gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
@@ -20,7 +20,7 @@ public class ScorePanel : MonoBehaviour {
 		dayVal.text = gameManager.currentDay.ToString();
 
 		deadVal = GameObject.Find ("DeadVal").GetComponent<Text> ();
-		deadVal.text = gameManager.currentDayDead.ToString();
+		deadVal.text = (gameManager.currentDayDead + gameManager.illPopulation).ToString();
 
 		healedVal = GameObject.Find ("HealedVal").GetComponent<Text> ();
 		healedVal.text = gameManager.currentDayHealed.ToString();

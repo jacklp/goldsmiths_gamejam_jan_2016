@@ -20,6 +20,6 @@ public class DayProgressBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        slider.value = (Time.time - startTime) / gm.dayLengh;
+        slider.value = 1.0f - (Time.time - startTime) / gm.dayLengh;
     }
 }

@@ -4202,7 +4202,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -4224,7 +4224,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 0
+    m_RotationOrder: 4
 --- !u!82 &691227662
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4547,6 +4547,22 @@ Prefab:
     - target: {fileID: 22440584, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11426280, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}
+      propertyPath: m_CellSize.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 11426280, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}
+      propertyPath: m_CellSize.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 11426280, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}
+      propertyPath: m_Constraint
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11426280, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}
+      propertyPath: m_ConstraintCount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 54436ea776802c94ea119d554f1cfce0, type: 2}

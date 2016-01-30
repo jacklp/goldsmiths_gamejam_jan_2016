@@ -21,12 +21,16 @@ public class PatientController : MonoBehaviour {
     public event Action exitReachedEvent;
     public event Action deathExitReachedEvent;
 
+	Animator animator;
+
 	public float speed = 2.0f;
 
     private ParticleSystem particleSystem;
 
 	// Use this for initialization
 	void Start () {
+		
+		animator = transform.GetChild (0).GetComponent<Animator> ();
 
 		sittingPoint = GameObject.Find ("SeatPosition").transform;
         healedExitPoint = GameObject.Find("HealedExit").transform;
@@ -45,10 +49,13 @@ public class PatientController : MonoBehaviour {
 	public void GoToSeat()
 	{
 		audio1.Play ();
+
+		animator.SetBool ("isWalking", true);
 		StartCoroutine (GotToPos (sittingPoint.position, OnSeatReached));
 	}
 
     public void GoToEntrance() {
+		animator.SetBool ("isWalking", true);
         StartCoroutine(GotToPos(entrancePoint.position));
     }
 
@@ -104,10 +111,12 @@ public class PatientController : MonoBehaviour {
 	// TO be called by Mecanim event or OnTriggerEnter!!
 	public void OnSeatReached() 
 	{
-		if (seatReachedEvent != null)
+		if (seatReachedEvent != null) {
+			animator.SetBool ("isWalking", false);
 			audio1.Stop ();
 			audio2.Play ();
 			seatReachedEvent ();
+		}
 	}
 	
 }

@@ -14,6 +14,8 @@ public class ComboUI : MonoBehaviour {
     private string currentCombo = "";
     private int currentPos;
 
+    private Animation flashAnim;
+
     public static ComboUI Instance {
         get {
             if (instance == null) {
@@ -23,6 +25,10 @@ public class ComboUI : MonoBehaviour {
         }
     }
 
+    void Start() {
+        flashAnim = GetComponent<Animation>();
+    }
+
     void Update() {
         int index = currentCombo.Length - currentPos - 1;
         if (index < 0) { return; }
@@ -30,26 +36,26 @@ public class ComboUI : MonoBehaviour {
             if (currentCombo[index] == 'r') {
                 ColorGreen();
             } else {
-                ClearColors();
+                FlashArrows();
             }
         } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
             if (currentCombo[index] == 'l') {
                 ColorGreen();
             } else {
-                ClearColors();
+                FlashArrows();
             }
         } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
             if (currentCombo[index] == 'u') {
                 ColorGreen();
             } else {
-                ClearColors();
+                FlashArrows();
             }
         } else if (Input.GetKeyDown(KeyCode.DownArrow)) {
             Debug.Log("INDEX : " + index + " COMBOLEN " +currentCombo.Length);
             if (currentCombo[index] == 'd') {
                 ColorGreen();
             } else {
-                ClearColors();
+                FlashArrows();
             }
         }
     }
@@ -64,7 +70,10 @@ public class ComboUI : MonoBehaviour {
     private void ColorGreen() {
         transform.GetChild(currentPos).gameObject.GetComponent<Image>().color = Color.green;
         ++currentPos;
+    }
 
+    public void FlashArrows() {
+        flashAnim.Play();
     }
 
     public void AddCombo(string combo) {

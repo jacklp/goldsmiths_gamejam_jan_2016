@@ -86,15 +86,16 @@ public class GameManager : StateMachineBase {
         dayIntroSplashScreen = GameObject.Find("DayIntroSplashScreen");
         dayEndSplashScreen = GameObject.Find("DayEndSplashScreen");
         patientBar = GameObject.Find("PatientTime");
+        gameHUD = GameObject.Find("GameHUD");
+
         dayEndSplashScreen.SetActive(false);
         patientBar.SetActive(false);
-
 
         currentState = GameStates.INTRO;
     }
 
     protected override void OnUpdate() {
-        stateText.text = currentState.ToString();
+        //stateText.text = currentState.ToString();
     }
 
     /************************************** DAY - START **************************************/

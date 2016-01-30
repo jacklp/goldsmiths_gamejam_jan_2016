@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: d3a5507ca4c21f540a55b82840344866
-timeCreated: 1454193362
-licenseType: Pro
+guid: b801f7dc56e424762b2fcfac389131a5
+timeCreated: 1454195794
+licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -113,8 +113,8 @@ ModelImporter:
     100210: patient_rigged_Character1_Spine
     100212: patient_rigged_Character1_Spine1
     100214: patient_rigged_Character1_Spine2
-    100216: //RootNode
-    100218: HeadC
+    100216: PatientC_head
+    100218: //RootNode
     400000: Body
     400002: Bone
     400004: patient_rigged_Character1_Ctrl_ChestEndEffector
@@ -223,15 +223,15 @@ ModelImporter:
     400210: patient_rigged_Character1_Spine
     400212: patient_rigged_Character1_Spine1
     400214: patient_rigged_Character1_Spine2
-    400216: //RootNode
-    400218: HeadC
+    400216: PatientC_head
+    400218: //RootNode
     2300000: Bone
-    2300002: HeadC
+    2300002: PatientC_head
     3300000: Bone
-    3300002: HeadC
+    3300002: PatientC_head
     4300000: Bone
     4300002: Body
-    4300004: HeadC
+    4300004: PatientC_head
     7400000: Take 001
     9500000: //RootNode
     13700000: Body
@@ -277,7 +277,7 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 4
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:

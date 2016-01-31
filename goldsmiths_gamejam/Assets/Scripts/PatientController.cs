@@ -123,13 +123,13 @@ public class PatientController : MonoBehaviour {
 	{
 		audio1.Play ();
 
-		animator.SetBool ("isWalking", true);
+		//animator.SetBool ("isWalking", true);
 		StartCoroutine (GotToPos (sittingPoint.position, OnSeatReached));
 	}
 
     public void GoToEntrance() {
-		animator.SetBool ("isWalking", true);
-        StartCoroutine(GotToPos(entrancePoint.position));
+		//animator.SetBool ("isWalking", true);
+        StartCoroutine(GotToPos(entrancePoint.position));//, () => { animator.SetBool("isWalking", false); }));
     }
 
 	IEnumerator GotToPos(Vector3 pos, Action onFinish = null)
@@ -143,10 +143,15 @@ public class PatientController : MonoBehaviour {
             onFinish();
         }
 	}
+    public bool isMoving;
+    Vector3 lastPos;
 
 	// Update is called once per frame
 	void Update () {
-		
+        Vector3 speed = (transform.position - lastPos) / Time.deltaTime;
+        isMoving = (speed.sqrMagnitude > 0.001f);
+        animator.SetBool("isWalking", isMoving);
+        lastPos = transform.position;
 	}
 
 	public void Heal() {
@@ -195,7 +200,7 @@ public class PatientController : MonoBehaviour {
 	public void OnSeatReached() 
 	{
 		if (seatReachedEvent != null) {
-			animator.SetBool ("isWalking", false);
+			//animator.SetBool ("isWalking", false);
 			audio1.Stop ();
 			audio2.Play ();
 			seatReachedEvent ();

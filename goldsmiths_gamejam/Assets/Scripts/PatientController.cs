@@ -38,7 +38,6 @@ public class PatientController : MonoBehaviour {
 
 		animator = transform.GetChild (0).GetComponent<Animator> ();
 
-
 		sittingPoint = GameObject.Find ("SeatPosition").transform;
         healedExitPoint = GameObject.Find("HealedExit").transform;
         entrancePoint = GameObject.Find("TentEnterPosition").transform;
@@ -123,12 +122,14 @@ public class PatientController : MonoBehaviour {
 	{
 		audio1.Play ();
 
-		//animator.SetBool ("isWalking", true);
+		animator.SetBool ("isWalking", true);
 		StartCoroutine (GotToPos (sittingPoint.position, OnSeatReached));
 	}
 
     public void GoToEntrance() {
-		//animator.SetBool ("isWalking", true);
+        animator.Play("Idle");
+
+		animator.SetBool ("isWalking", true);
         StartCoroutine(GotToPos(entrancePoint.position));//, () => { animator.SetBool("isWalking", false); }));
     }
 
@@ -149,7 +150,7 @@ public class PatientController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Vector3 speed = (transform.position - lastPos) / Time.deltaTime;
-        isMoving = (speed.sqrMagnitude > 0.001f);
+        isMoving = (speed.sqrMagnitude > 0.01f);
         animator.SetBool("isWalking", isMoving);
         lastPos = transform.position;
 	}
@@ -176,6 +177,8 @@ public class PatientController : MonoBehaviour {
 		audio2.Stop ();
 		audio3.Play ();
         coneAnimator.SetTrigger("enterDie");
+        animator.Play("Dead");
+
         StartCoroutine(GotToPos(deathExitPoint.position, () => {
             Debug.Log("Patient Died!");
 
@@ -184,6 +187,9 @@ public class PatientController : MonoBehaviour {
                 deathExitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
                 coneAnimator.SetTrigger("exitDie");
+
+                animator.Play("Idle");
+
 
                 UpdateCurrentIllnesses();
             }
@@ -200,7 +206,7 @@ public class PatientController : MonoBehaviour {
 	public void OnSeatReached() 
 	{
 		if (seatReachedEvent != null) {
-			//animator.SetBool ("isWalking", false);
+			animator.SetBool ("isWalking", false);
 			audio1.Stop ();
 			audio2.Play ();
 			seatReachedEvent ();

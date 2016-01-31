@@ -2550,7 +2550,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 430144437}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fc6bde01469c7b4badee5362f191d96, type: 3}
   m_Name: 
@@ -2856,19 +2856,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22424882, guid: 7c538abc897297e40b1f8b458abcff63, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22408866, guid: 7c538abc897297e40b1f8b458abcff63, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22404600, guid: 7c538abc897297e40b1f8b458abcff63, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22482180, guid: 7c538abc897297e40b1f8b458abcff63, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 196682, guid: 7c538abc897297e40b1f8b458abcff63, type: 2}
       propertyPath: m_IsActive

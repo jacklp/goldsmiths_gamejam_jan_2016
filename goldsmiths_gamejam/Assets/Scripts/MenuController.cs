@@ -10,6 +10,7 @@ public class MenuController : MonoBehaviour {
 
     public Canvas menuCanvas;
     public Canvas creditsCanvas;
+    public Canvas tutorialCanvas;
 
     public void PlayButtonPressed() {
         Application.LoadLevel("GameManagerTest");
@@ -33,8 +34,8 @@ public class MenuController : MonoBehaviour {
     }
 
     public void CreditsButtonPressed() {
-        creditsCanvas.enabled = true;
-        menuCanvas.enabled = false;
+        menuCanvas.gameObject.SetActive(false);
+        creditsCanvas.gameObject.SetActive(true);
     }
 
     public void SliderChanged() {
@@ -42,7 +43,17 @@ public class MenuController : MonoBehaviour {
     }
 
     public void BackButtonPressed() {
-        menuCanvas.enabled = true;
-        creditsCanvas.enabled = false;
+        menuCanvas.gameObject.SetActive(true);
+        creditsCanvas.gameObject.SetActive(false);
+    }
+
+    public void TutorialButtonPressed() {
+        tutorialCanvas.gameObject.SetActive(true);
+        menuCanvas.gameObject.SetActive(false);
+    }
+
+    public void TutorialBackButtonPressed() {
+        tutorialCanvas.gameObject.SetActive(false);
+        menuCanvas.gameObject.SetActive(true);
     }
 }

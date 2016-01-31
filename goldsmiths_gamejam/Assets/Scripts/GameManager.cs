@@ -297,8 +297,6 @@ public class GameManager : StateMachineBase {
 
         if (hardMode == 1) {
             money += healedPopulation;
-            money -= illPopulation;
-            money = (money < 0) ? 0 : money;
         } else {
             money += 2 * healedPopulation;
         }

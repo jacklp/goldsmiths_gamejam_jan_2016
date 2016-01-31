@@ -79,7 +79,7 @@ public class GameManager : StateMachineBase {
         if (hardMode == 1) {
             dayLengh = 45.0f;
         } else {
-            dayLengh = 30.0f;
+            dayLengh = 5.0f;
         }
 
         patients = new Queue<PatientController>();
@@ -321,6 +321,9 @@ public class GameManager : StateMachineBase {
         /*else {
             currentState = GameStates.INTRO;
         }*/
+
+        GameObject.Find("ConeContainer").GetComponent<Animator>().SetTrigger("exitDie");
+
     }
 
     void DAY_END_OnExitState() {

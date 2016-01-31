@@ -21,12 +21,12 @@ public class PatientController : MonoBehaviour {
     public event Action exitReachedEvent;
     public event Action deathExitReachedEvent;
 
-	public Animator animator;
+    public Animator animator; /*** KUNKUNKUNKUN ***/
 
 	public float speed = 2.0f;
 
     private ParticleSystem particleSystem;
-    private Animator coneAnimator;
+    private Animator coneAnimator; /*** KUNKUNKUNKUN ***/
 
     public List<Illness> currentIllnesses;
 
@@ -42,7 +42,7 @@ public class PatientController : MonoBehaviour {
         healedExitPoint = GameObject.Find("HealedExit").transform;
         entrancePoint = GameObject.Find("TentEnterPosition").transform;
         deathExitPoint = GameObject.Find("DeadExit").transform;
-        coneAnimator = GameObject.Find("ConeContainer").GetComponent<Animator>();
+        coneAnimator = GameObject.Find("ConeContainer").GetComponent<Animator>(); /*** KUNKUNKUNKUN ***/
         particleSystem = GameObject.Find("PurplePS").GetComponent<ParticleSystem>();
         particleSystem.playOnAwake = true;
         //particleSystem.gameObject.SetActive(false);
@@ -122,14 +122,14 @@ public class PatientController : MonoBehaviour {
 	{
 		audio1.Play ();
 
-		animator.SetBool ("isWalking", true);
+		animator.SetBool ("isWalking", true); /*** KUNKUNKUNKUN ***/
 		StartCoroutine (GotToPos (sittingPoint.position, OnSeatReached));
 	}
 
     public void GoToEntrance() {
-        animator.Play("Idle");
+        animator.Play("Idle"); /*** KUNKUNKUNKUN ***/
 
-		animator.SetBool ("isWalking", true);
+        animator.SetBool("isWalking", true); /*** KUNKUNKUNKUN ***/
         StartCoroutine(GotToPos(entrancePoint.position));//, () => { animator.SetBool("isWalking", false); }));
     }
 
@@ -151,7 +151,7 @@ public class PatientController : MonoBehaviour {
 	void Update () {
         Vector3 speed = (transform.position - lastPos) / Time.deltaTime;
         isMoving = (speed.sqrMagnitude > 0.01f);
-        animator.SetBool("isWalking", isMoving);
+        animator.SetBool("isWalking", isMoving); /*** KUNKUNKUNKUN ***/
         lastPos = transform.position;
 	}
 
@@ -176,8 +176,8 @@ public class PatientController : MonoBehaviour {
     public void Die() {
 		audio2.Stop ();
 		audio3.Play ();
-        coneAnimator.SetTrigger("enterDie");
-        animator.Play("Dead");
+        coneAnimator.SetTrigger("enterDie"); /*** KUNKUNKUNKUN ***/
+        animator.Play("Dead"); /*** KUNKUNKUNKUN ***/
 
         StartCoroutine(GotToPos(deathExitPoint.position, () => {
             Debug.Log("Patient Died!");
@@ -186,9 +186,9 @@ public class PatientController : MonoBehaviour {
             if (deathExitReachedEvent != null) {
                 deathExitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
-                coneAnimator.SetTrigger("exitDie");
+                coneAnimator.SetTrigger("exitDie"); /*** KUNKUNKUNKUN ***/
 
-                animator.Play("Idle");
+                animator.Play("Idle"); /*** KUNKUNKUNKUN ***/
 
 
                 UpdateCurrentIllnesses();
@@ -206,7 +206,7 @@ public class PatientController : MonoBehaviour {
 	public void OnSeatReached() 
 	{
 		if (seatReachedEvent != null) {
-			animator.SetBool ("isWalking", false);
+            animator.SetBool("isWalking", false); /*** KUNKUNKUNKUN ***/
 			audio1.Stop ();
 			audio2.Play ();
 			seatReachedEvent ();

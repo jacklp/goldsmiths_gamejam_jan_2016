@@ -26,6 +26,7 @@ public class PatientController : MonoBehaviour {
 	public float speed = 2.0f;
 
     private ParticleSystem particleSystem;
+    private Animator coneAnimator;
 
 	// Use this for initialization
 	void Start () {
@@ -36,7 +37,7 @@ public class PatientController : MonoBehaviour {
         healedExitPoint = GameObject.Find("HealedExit").transform;
         entrancePoint = GameObject.Find("TentEnterPosition").transform;
         deathExitPoint = GameObject.Find("DeadExit").transform;
-
+        coneAnimator = GameObject.Find("ConeContainer").GetComponent<Animator>();
         particleSystem = GameObject.Find("PurplePS").GetComponent<ParticleSystem>();
         particleSystem.playOnAwake = true;
         //particleSystem.gameObject.SetActive(false);
@@ -93,11 +94,13 @@ public class PatientController : MonoBehaviour {
     public void Die() {
 		audio2.Stop ();
 		audio3.Play ();
+        coneAnimator.SetTrigger("enterDie");
         StartCoroutine(GotToPos(deathExitPoint.position, () => {
             Debug.Log("Patient Died!");
             if (deathExitReachedEvent != null) {
                 deathExitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
+                coneAnimator.SetTrigger("exitDie");
             }
         }));
     }

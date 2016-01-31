@@ -36,6 +36,11 @@ public class GameManager : StateMachineBase {
     public PatientController patient3;
     private PatientController currentPatient;
 
+    public PatientController CurrentPatient
+    {
+        get { return currentPatient; }
+    }
+
     private Vector3 pat1Pos;
     private Vector3 pat2Pos;
     private Vector3 pat3Pos;
@@ -95,7 +100,7 @@ public class GameManager : StateMachineBase {
     }
 
     protected override void OnUpdate() {
-        //stateText.text = currentState.ToString();
+        stateText.text = currentState.ToString();
     }
 
     /************************************** DAY - START **************************************/
@@ -166,7 +171,9 @@ public class GameManager : StateMachineBase {
 
     void HEALING_OnEnterState() {
         comboUI.enabled = true;
-        patientTime = patientTimeOut;
+        
+        patientTime = patientTimeOut * currentPatient.currentIllnesses.Count;
+        patientTimeOut = patientTime;
         inputController.successComboEvent += OnPatientHealed;
         comboUI.AddCombo(inputController.GetTopCombo());
         patientBar.SetActive(true);
@@ -205,6 +212,7 @@ public class GameManager : StateMachineBase {
         comboUI.ClearChildren();
         inputController.successComboEvent -= OnPatientHealed;
         patientBar.SetActive(false);
+        patientTimeOut = 5.0f;
 
     }
 

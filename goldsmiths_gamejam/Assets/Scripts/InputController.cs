@@ -10,11 +10,23 @@ public class InputController : MonoBehaviour {
     private bool checkSequence;
 
     private static List<Illness> illnessesDef;
+
+    public static List<Illness> IllnessesDef
+    {
+        get { return InputController.illnessesDef; }
+    }
     private GameManager gameManager;
+
+    private int nrIllnesses;
+
+    public int NrIllnesses
+    {
+        get { return nrIllnesses; }
+    }
 
 	public event Action<bool> successComboEvent;
 
-    void Start() {
+    void Awake() {
         inputBuffer = new StringBuffer();
         currentIllnesses = new List<Illness>();
         illnessesDef = new List<Illness>();
@@ -88,14 +100,17 @@ public class InputController : MonoBehaviour {
     }
 
     public void UpdateCurrentIllnesses() {
+        currentIllnesses = gameManager.CurrentPatient.currentIllnesses;
+        nrIllnesses = currentIllnesses.Count;
+        Debug.Log("ILLNESSES: "+ nrIllnesses);
+        /*
         currentIllnesses.Clear();
 
         int day = gameManager.currentDay;
-        int nrIllnesses = 0;
         if (PlayerPrefs.GetInt("hardmode") == 1) {
-            nrIllnesses = UnityEngine.Random.Range(Mathf.Max(2, day / 3), Mathf.Max(4, day / 2));
+            nrIllnesses = UnityEngine.Random.Range(Mathf.Max(4, day / 3), Mathf.Max(5, day / 2));
         } else {
-            nrIllnesses = UnityEngine.Random.Range(Mathf.Max(1, day / 3), Mathf.Max(1, day / 2));
+            nrIllnesses = UnityEngine.Random.Range(Mathf.Max(1, day / 3), Mathf.Max(3, day / 2));
         }
         nrIllnesses = (nrIllnesses > 6) ? 6 : nrIllnesses;
         int limit = 5;
@@ -107,6 +122,7 @@ public class InputController : MonoBehaviour {
             illnessesDef[5] = temp;
             --index;
         }
+         * */
     }
 
     public string GetTopCombo() {

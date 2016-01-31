@@ -21,17 +21,21 @@ public class PatientController : MonoBehaviour {
     public event Action exitReachedEvent;
     public event Action deathExitReachedEvent;
 
-	Animator animator;
+	public Animator animator;
 
 	public float speed = 2.0f;
 
     private ParticleSystem particleSystem;
     private Animator coneAnimator;
 
+    public List<Illness> currentIllnesses;
+
 	// Use this for initialization
 	void Start () {
-		
+        currentIllnesses = new List<Illness>();
+
 		animator = transform.GetChild (0).GetComponent<Animator> ();
+
 
 		sittingPoint = GameObject.Find ("SeatPosition").transform;
         healedExitPoint = GameObject.Find("HealedExit").transform;
@@ -44,8 +48,38 @@ public class PatientController : MonoBehaviour {
 
 		targetPos = sittingPoint.position;
 		targetPos.y = transform.position.y;
+        
+        UpdateCurrentIllnesses();
+
 		// Move towards the sitting position
 	}
+
+    public void UpdateCurrentIllnesses()
+    {
+        currentIllnesses.Clear();
+        int nrIllnesses;
+
+        int day = GameManager.Instance.currentDay;
+        if (PlayerPrefs.GetInt("hardmode") == 1)
+        {
+            nrIllnesses = UnityEngine.Random.Range(Mathf.Max(4, day / 3), Mathf.Max(5, day / 2));
+        }
+        else
+        {
+            nrIllnesses = UnityEngine.Random.Range(Mathf.Max(1, day / 3), Mathf.Max(3, day / 2));
+        }
+        nrIllnesses = (nrIllnesses > 6) ? 6 : nrIllnesses;
+        int limit = 5;
+        for (uint i = 0; i < nrIllnesses; ++i)
+        {
+            int index = UnityEngine.Random.Range(0, limit);
+            currentIllnesses.Add(InputController.IllnessesDef[index]);
+            Illness temp = InputController.IllnessesDef[index];
+            InputController.IllnessesDef[index] = InputController.IllnessesDef[5];
+            InputController.IllnessesDef[5] = temp;
+            --index;
+        }
+    }
 
 	public void GoToSeat()
 	{
@@ -87,6 +121,8 @@ public class PatientController : MonoBehaviour {
             if (exitReachedEvent != null) {
                 exitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
+                UpdateCurrentIllnesses();
+
             }
         }));
 	}
@@ -101,6 +137,8 @@ public class PatientController : MonoBehaviour {
                 deathExitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
                 coneAnimator.SetTrigger("exitDie");
+
+                UpdateCurrentIllnesses();
             }
         }));
     }

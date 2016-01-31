@@ -32,15 +32,15 @@ public class InputController : MonoBehaviour {
         illnessesDef = new List<Illness>();
 
         if (PlayerPrefs.GetInt("hardmode") == 1) {
-            illnessesDef.Add(new Illness("Arrow", "udruldur", 2.3f));
-            illnessesDef.Add(new Illness("Axe", "llurdul", 2.0f));
-            illnessesDef.Add(new Illness("Eye", "lrlruld", 2.2f));
-            illnessesDef.Add(new Illness("Hair", "udldrulu", 2.3f));
-            illnessesDef.Add(new Illness("Green", "dudulrud", 2.5f));
-            illnessesDef.Add(new Illness("Knife", "rulruudru", 2.5f));
+            illnessesDef.Add(new Illness("Arrow", "udruldur", 2.1f));
+            illnessesDef.Add(new Illness("Axe", "llurdul", 1.8f));
+            illnessesDef.Add(new Illness("Eye", "lrlruld", 2.0f));
+            illnessesDef.Add(new Illness("Hair", "udldrulu", 2.1f));
+            illnessesDef.Add(new Illness("Green", "dudulrud", 2.3f));
+            illnessesDef.Add(new Illness("Knife", "rulruudru", 2.3f));
         } else {
             illnessesDef.Add(new Illness("Arrow", "dudu", 0.8f));
-            illnessesDef.Add(new Illness("Hair", "udlr", 0.8f));
+            illnessesDef.Add(new Illness("Axe", "udlr", 0.8f));
             illnessesDef.Add(new Illness("Eye", "lurldr", 1.3f));
             illnessesDef.Add(new Illness("Hair", "uurdd", 1.3f));
             illnessesDef.Add(new Illness("Green", "lldrru", 1.5f));

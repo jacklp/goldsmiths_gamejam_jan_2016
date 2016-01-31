@@ -97,12 +97,16 @@ public class PatientController : MonoBehaviour {
         coneAnimator.SetTrigger("enterDie");
         StartCoroutine(GotToPos(deathExitPoint.position, () => {
             Debug.Log("Patient Died!");
+            coneAnimator.SetTrigger("exitDie");
             if (deathExitReachedEvent != null) {
                 deathExitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
-                coneAnimator.SetTrigger("exitDie");
             }
         }));
+    }
+
+    public void CloseLights() {
+        coneAnimator.SetTrigger("exitDie");
     }
 
 	/*

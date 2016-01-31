@@ -73,7 +73,7 @@ public class GameManager : StateMachineBase {
         if (hardMode == 1) {
             dayLengh = 45.0f;
         } else {
-            dayLengh = 6.0f;
+            dayLengh = 60.0f;
         }
 
         patients = new Queue<PatientController>();
@@ -276,6 +276,8 @@ public class GameManager : StateMachineBase {
 
     //IEnumerator DAY_END_EnterState() {
     public void DAY_END_OnEnterState() {
+
+        currentPatient.CloseLights();
 
         if (hardMode == 1) {
             money += healedPopulation;

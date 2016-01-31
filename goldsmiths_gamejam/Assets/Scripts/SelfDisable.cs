@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SelfDisable : MonoBehaviour {
 
-    private float timeOut = 3.0f;
+    public float timeOut = 3.0f;
     private float disableTime;
 
     void OnEnable() {

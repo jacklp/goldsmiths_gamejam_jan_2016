@@ -8,6 +8,7 @@ public class InputController : MonoBehaviour {
     private StringBuffer inputBuffer;
     private List<Illness> currentIllnesses;
     private bool checkSequence;
+    public static GameObject tooSlowText;
 
     private static List<Illness> illnessesDef;
 
@@ -24,12 +25,15 @@ public class InputController : MonoBehaviour {
         get { return nrIllnesses; }
     }
 
+
 	public event Action<bool, string> successComboEvent;
 
     void Awake() {
         inputBuffer = new StringBuffer();
         currentIllnesses = new List<Illness>();
         illnessesDef = new List<Illness>();
+        tooSlowText = GameObject.Find("TooSlow");
+        tooSlowText.SetActive(false);
 
         if (PlayerPrefs.GetInt("hardmode") == 1) {
             illnessesDef.Add(new Illness("Arrow", "udruldur", 2.1f));
@@ -179,6 +183,8 @@ public class InputController : MonoBehaviour {
 
             if (buffer[0].GetTime() - buffer[combo.Length - 1].GetTime() > time) {
                 ComboUI.Instance.FlashArrows();
+                //tooSlowText.SetActive(true);
+                InputController.tooSlowText.SetActive(true);
                 return false;
             }
 

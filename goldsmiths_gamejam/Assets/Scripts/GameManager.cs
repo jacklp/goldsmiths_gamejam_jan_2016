@@ -209,18 +209,7 @@ public class GameManager : StateMachineBase {
         if(patientTime <= 0.0f) {
             currentPatient.Die();
             currentState = GameStates.DEAD;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            currentPatient.Heal();
-            currentState = GameStates.HEALED;
-        }
-
-        if (Input.GetKeyDown(KeyCode.W)) {
-            currentPatient.Die();
-            currentState = GameStates.DEAD;
-        }
-            
+        }   
     }
 
     void HEALING_OnExitState() {

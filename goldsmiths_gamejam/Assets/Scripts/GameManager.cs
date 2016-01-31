@@ -105,7 +105,7 @@ public class GameManager : StateMachineBase {
     }
 
     protected override void OnUpdate() {
-        stateText.text = currentState.ToString();
+        //stateText.text = currentState.ToString();
     }
 
     /************************************** DAY - START **************************************/

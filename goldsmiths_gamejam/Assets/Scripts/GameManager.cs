@@ -79,7 +79,7 @@ public class GameManager : StateMachineBase {
         if (hardMode == 1) {
             dayLengh = 45.0f;
         } else {
-            dayLengh = 5.0f;
+            dayLengh = 30.0f;
         }
 
         patients = new Queue<PatientController>();

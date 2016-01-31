@@ -24,7 +24,7 @@ public class InputController : MonoBehaviour {
         get { return nrIllnesses; }
     }
 
-	public event Action<bool> successComboEvent;
+	public event Action<bool, string> successComboEvent;
 
     void Awake() {
         inputBuffer = new StringBuffer();
@@ -33,18 +33,18 @@ public class InputController : MonoBehaviour {
 
         if (PlayerPrefs.GetInt("hardmode") == 1) {
             illnessesDef.Add(new Illness("Arrow", "udruldur", 1.3f));
-            illnessesDef.Add(new Illness("Arrow", "llurdul", 1.0f));
-            illnessesDef.Add(new Illness("Arrow", "lrlruld", 1.2f));
-            illnessesDef.Add(new Illness("Arrow", "udldrulu", 1.3f));
-            illnessesDef.Add(new Illness("Arrow", "dudulrud", 1.5f));
-            illnessesDef.Add(new Illness("Arrow", "rulruudru", 1.5f));
+            illnessesDef.Add(new Illness("Axe", "llurdul", 1.0f));
+            illnessesDef.Add(new Illness("Eye", "lrlruld", 1.2f));
+            illnessesDef.Add(new Illness("Hair", "udldrulu", 1.3f));
+            illnessesDef.Add(new Illness("Green", "dudulrud", 1.5f));
+            illnessesDef.Add(new Illness("Knife", "rulruudru", 1.5f));
         } else {
             illnessesDef.Add(new Illness("Arrow", "dudu", 0.8f));
-            illnessesDef.Add(new Illness("Arrow", "udlr", 0.8f));
-            illnessesDef.Add(new Illness("Arrow", "lurldr", 1.3f));
-            illnessesDef.Add(new Illness("Arrow", "uurdd", 1.3f));
-            illnessesDef.Add(new Illness("Arrow", "lldrru", 1.5f));
-            illnessesDef.Add(new Illness("Arrow", "durulu", 1.5f));
+            illnessesDef.Add(new Illness("Hair", "udlr", 0.8f));
+            illnessesDef.Add(new Illness("Eye", "lurldr", 1.3f));
+            illnessesDef.Add(new Illness("Hair", "uurdd", 1.3f));
+            illnessesDef.Add(new Illness("Green", "lldrru", 1.5f));
+            illnessesDef.Add(new Illness("Knife", "durulu", 1.5f));
         }
 
         gameManager = GetComponent<GameManager>();
@@ -79,15 +79,15 @@ public class InputController : MonoBehaviour {
                 Debug.Log("********* Found combo: " + i.GetCombo());
                 removeIndex = currentIllnesses.IndexOf(i);
                 if (successComboEvent != null) {
-                    successComboEvent(false);
+                    successComboEvent(false, i.GetName());
                 }
             }
 
             if (removeIndex >= 0) {
-                currentIllnesses.RemoveAt(removeIndex);
+                //currentIllnesses.RemoveAt(removeIndex);
                 if (currentIllnesses.Count <= 0) {
                     if (successComboEvent != null) {
-                        successComboEvent(true);
+                        successComboEvent(true, "");
                     }
                 } else {
                     ComboUI.Instance.ClearChildren();

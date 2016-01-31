@@ -25,25 +25,7 @@ public class ScorePanel : MonoBehaviour {
 		healedVal = GameObject.Find ("HealedVal").GetComponent<Text> ();
 		healedVal.text = gameManager.currentDayHealed.ToString();
 
-		moneyVal = GameObject.Find ("HealedVal").GetComponent<Text> ();
+		moneyVal = GameObject.Find ("MoneyVal").GetComponent<Text> ();
 		moneyVal.text = gameManager.money.ToString();
 	}
-
-	public void BuyMask(int maskType){
-		switch (maskType) {
-		case 0:
-			gameManager.money = gameManager.money - 5;	
-			gameManager.currentMask = 0;
-			break;
-		case 1:
-			gameManager.money = gameManager.money - 10;
-			gameManager.currentMask = 1;
-			break;
-		case 2:
-			gameManager.money = gameManager.money - 20;
-			gameManager.currentMask = 2;
-			break;
-		}
-	}
-
 }

@@ -30,6 +30,8 @@ public class PatientController : MonoBehaviour {
 
     public List<Illness> currentIllnesses;
 
+    public GameObject[] wounds;
+
 	// Use this for initialization
 	void Start () {
         currentIllnesses = new List<Illness>();
@@ -48,7 +50,8 @@ public class PatientController : MonoBehaviour {
 
 		targetPos = sittingPoint.position;
 		targetPos.y = transform.position.y;
-        
+
+        ClearLooks();
         UpdateCurrentIllnesses();
 
 		// Move towards the sitting position
@@ -79,6 +82,41 @@ public class PatientController : MonoBehaviour {
             InputController.IllnessesDef[5] = temp;
             --index;
         }
+        UpdateLooks();
+    }
+
+    public void UpdateLooks()
+    {
+        Debug.Log("ILLNESES LIST: ------------------");
+        foreach (Illness i in currentIllnesses)
+        {
+            string name = i.GetName();
+            Debug.Log(name);
+            if (name == "Eye")
+                wounds[0].SetActive(true);
+            else if (name == "Axe")
+                wounds[1].SetActive(true);
+            else if (name == "Arrow")
+                wounds[2].SetActive(true);
+            else if (name == "Knife")
+                wounds[3].SetActive(true);
+            else if (name == "Hair")
+                wounds[4].SetActive(false);
+            else if (name == "Green")
+                wounds[5].SetActive(true);
+        }
+        Debug.Log("ILLNESES END: ------------------");
+
+    }
+
+    public void ClearLooks()
+    {
+        foreach(GameObject g in wounds)
+        {
+            g.SetActive(false);
+        }
+        wounds[4].SetActive(true);
+
     }
 
 	public void GoToSeat()
@@ -118,6 +156,8 @@ public class PatientController : MonoBehaviour {
 		// Walk Away
         StartCoroutine(GotToPos(healedExitPoint.position, () => {
             Debug.Log("Patient Healed!");
+
+            ClearLooks();
             if (exitReachedEvent != null) {
                 exitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
@@ -133,6 +173,8 @@ public class PatientController : MonoBehaviour {
         coneAnimator.SetTrigger("enterDie");
         StartCoroutine(GotToPos(deathExitPoint.position, () => {
             Debug.Log("Patient Died!");
+
+            ClearLooks();
             if (deathExitReachedEvent != null) {
                 deathExitReachedEvent();
                 transform.position = entrancePoint.position - entrancePoint.forward * 1.25f;
@@ -159,5 +201,42 @@ public class PatientController : MonoBehaviour {
 			seatReachedEvent ();
 		}
 	}
-	
+
+    public void OnIllnessRemoved(string name)
+    {
+        int remIndex = -1;
+        foreach(Illness i in currentIllnesses)
+        {
+            if (i.GetName() == name)
+            {
+                remIndex = currentIllnesses.IndexOf(i);
+                break;
+            }
+        }
+        if (remIndex != -1)
+            currentIllnesses.RemoveAt(remIndex);
+
+        Debug.Log("ILLNESS REMOVED " + name);
+
+        if (name == "Eye")
+            wounds[0].GetComponent<ItemRemove>().VanishItem();
+        else if (name == "Axe")
+            wounds[1].GetComponent<ItemRemove>().VanishItem();
+        else if (name == "Arrow")
+            wounds[2].GetComponent<ItemRemove>().VanishItem();
+        else if (name == "Knife")
+            wounds[3].GetComponent<ItemRemove>().VanishItem();
+        else if (name == "Hair")
+        {
+            wounds[4].SetActive(true);
+            wounds[4].GetComponent<ItemRemove>().VanishItem(true);
+        }
+        else if (name == "Green")
+        
+            wounds[5].GetComponent<ItemRemove>().VanishItem();
+        
+        
+            //wounds[0].SetActive(false);
+    }
+
 }

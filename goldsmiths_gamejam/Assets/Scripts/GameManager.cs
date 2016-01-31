@@ -28,7 +28,6 @@ public class GameManager : StateMachineBase {
     public int currentDay;
     public int currentDayHealed;
     public int currentDayDead;
-    public int currentMask;
     public int money;
 
     public PatientController patient1;
@@ -57,6 +56,7 @@ public class GameManager : StateMachineBase {
     public float patientTime;
 
     private int hardMode;
+    private int powerUp;
 
     public static GameManager Instance {
         get {
@@ -73,11 +73,12 @@ public class GameManager : StateMachineBase {
         comboUI.enabled = false;
 
         currentDay = 1;
+        powerUp = 0;
         hardMode = PlayerPrefs.GetInt("hardmode");
         if (hardMode == 1) {
             dayLengh = 45.0f;
         } else {
-            dayLengh = 60.0f;
+            dayLengh = 30.0f;
         }
 
         patients = new Queue<PatientController>();
@@ -174,6 +175,12 @@ public class GameManager : StateMachineBase {
         
         patientTime = patientTimeOut * currentPatient.currentIllnesses.Count;
         patientTimeOut = patientTime;
+       // patientTime = patientTimeOut;
+
+        if (powerUp == 1) {
+            patientTime += 3.0f;
+        }
+
         inputController.successComboEvent += OnPatientHealed;
         comboUI.AddCombo(inputController.GetTopCombo());
         patientBar.SetActive(true);
@@ -279,8 +286,15 @@ public class GameManager : StateMachineBase {
     //IEnumerator DAY_END_EnterState() {
     public void DAY_END_OnEnterState() {
 
-        money = money - currentDayDead < 0 ? 0 : money - currentDayDead;
-        money = money + currentDayHealed;
+        if (hardMode == 1) {
+            money += healedPopulation;
+            money -= illPopulation;
+            money = (money < 0) ? 0 : money;
+        } else {
+            money += 2 * healedPopulation;
+        }
+
+        powerUp = 0;
 
         comboUI.ClearChildren();
 
@@ -312,7 +326,9 @@ public class GameManager : StateMachineBase {
         currentState = GameStates.HEALING;
     }
 
-    void OnPatientHealed(bool finished) {
+    void OnPatientHealed(bool finished, string illnessName) {
+        currentPatient.OnIllnessRemoved(illnessName);
+
         if (finished) {
             currentState = GameStates.HEALED;
             currentPatient.Heal();
@@ -338,6 +354,24 @@ public class GameManager : StateMachineBase {
 
     public void OnMaskBought(int mask)
     {
+        if (mask == 0) {
+            powerUp = 0;
+        }
+
+        if (money >= 5 && mask == 1) {
+            money -= 5;
+            powerUp = 1;
+        } else if (money < 5 && mask == 1) {
+            return;
+        }
+
+        if (money >= 10 && mask == 2) {
+            money -= 10;
+            ++currentPopulation;
+        } else if (money < 10 && mask == 2) {
+            return;
+        }
+
         if ((GameStates)currentState == GameStates.DAY_END)
             currentState = GameStates.INTRO;
     }

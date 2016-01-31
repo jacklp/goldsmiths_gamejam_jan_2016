@@ -22,6 +22,7 @@ public class GameManager : StateMachineBase {
     public GameObject gameHUD;
     private GameObject dayIntroSplashScreen;
     private GameObject dayEndSplashScreen;
+    private GameObject gameOverSplashScreen;
     private GameObject patientBar;
 
     // Vars for the battle
@@ -91,11 +92,14 @@ public class GameManager : StateMachineBase {
 
         dayIntroSplashScreen = GameObject.Find("DayIntroSplashScreen");
         dayEndSplashScreen = GameObject.Find("DayEndSplashScreen");
+        gameOverSplashScreen = GameObject.Find("GameOverSplashScreen");
+
         patientBar = GameObject.Find("PatientTime");
         gameHUD = GameObject.Find("GameHUD");
 
         dayEndSplashScreen.SetActive(false);
         patientBar.SetActive(false);
+        gameOverSplashScreen.SetActive(false);
 
         currentState = GameStates.INTRO;
     }
@@ -172,8 +176,13 @@ public class GameManager : StateMachineBase {
 
     void HEALING_OnEnterState() {
         comboUI.enabled = true;
-        
-        patientTime = patientTimeOut * currentPatient.currentIllnesses.Count;
+
+        if (currentPatient.currentIllnesses.Count == 0) {
+            currentPatient.UpdateCurrentIllnesses();
+            Debug.Log("*********** WAS 0 ************");
+        }
+
+        patientTime = patientTimeOut * Mathf.Max(1, currentPatient.currentIllnesses.Count);
         patientTimeOut = patientTime;
        // patientTime = patientTimeOut;
 
@@ -319,6 +328,17 @@ public class GameManager : StateMachineBase {
 
     }
 
+    /************************************** GAME_OVER  **************************************/
+
+    void GAME_OVER_OnEnterState()
+    {
+        gameOverSplashScreen.SetActive(true);
+    }
+
+    void GAME_OVER_OnExitState()
+    {
+        gameOverSplashScreen.SetActive(false);
+    } 
 
     /************************************** CALL-BACKS  **************************************/
 
@@ -376,4 +396,8 @@ public class GameManager : StateMachineBase {
             currentState = GameStates.INTRO;
     }
 
+    public void ReplayOnClick()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
 }

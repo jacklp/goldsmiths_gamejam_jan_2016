@@ -132,6 +132,10 @@ public class InputController : MonoBehaviour {
         return "";
     }
 
+    public void ClearBuffer() {
+        inputBuffer.ClearBuffer();
+    }
+
     private class StringBuffer {
 
         private KeyTime[] buffer;

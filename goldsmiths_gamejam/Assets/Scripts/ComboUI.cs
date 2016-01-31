@@ -15,6 +15,7 @@ public class ComboUI : MonoBehaviour {
     private int currentPos;
 
     private Animation flashAnim;
+    private InputController inputController;
 
     public static ComboUI Instance {
         get {
@@ -27,11 +28,17 @@ public class ComboUI : MonoBehaviour {
 
     void Start() {
         flashAnim = GetComponent<Animation>();
+        inputController = GameObject.Find("GameManager").GetComponent<InputController>();
     }
 
     void Update() {
         int index = currentCombo.Length - currentPos - 1;
-        if (index < 0) { return; }
+
+        if (index < 0 || index >= currentCombo.Length) { 
+            ClearColors(); 
+            return; 
+        }
+
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
             if (currentCombo[index] == 'r') {
                 ColorGreen();
@@ -62,6 +69,7 @@ public class ComboUI : MonoBehaviour {
 
     public void ClearColors() {
         currentPos = 0;
+        inputController.ClearBuffer();
         for (int i = 0; i < transform.childCount; ++i) {
             transform.GetChild(i).gameObject.GetComponent<Image>().color = Color.white;
         }

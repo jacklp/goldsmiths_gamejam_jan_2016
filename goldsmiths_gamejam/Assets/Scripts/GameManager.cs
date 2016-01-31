@@ -77,9 +77,9 @@ public class GameManager : StateMachineBase {
         powerUp = 0;
         hardMode = PlayerPrefs.GetInt("hardmode");
         if (hardMode == 1) {
-            dayLengh = 45.0f;
+            dayLengh = 60.0f;
         } else {
-            dayLengh = 30.0f;
+            dayLengh = 45.0f;
         }
 
         patients = new Queue<PatientController>();
@@ -130,9 +130,9 @@ public class GameManager : StateMachineBase {
 
         dayEnd = Time.time + dayLengh;
         if (hardMode == 1) {
-            illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(20, 30), currentPopulation);
+            illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(8, 12), currentPopulation);
         } else {
-            illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(10, 20), currentPopulation);
+            illPopulation = processedPatients = Mathf.Min(UnityEngine.Random.Range(5, 10), currentPopulation);
         }
         
         healedPopulation = 0;

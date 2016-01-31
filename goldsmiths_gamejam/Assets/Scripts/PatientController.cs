@@ -38,6 +38,11 @@ public class PatientController : MonoBehaviour {
 
 		animator = transform.GetChild (0).GetComponent<Animator> ();
 
+        float volume = PlayerPrefs.GetFloat("volume");
+        audio1.volume = volume;
+        audio2.volume = volume;
+        audio3.volume = volume;
+        audio4.volume = volume;
 
 		sittingPoint = GameObject.Find ("SeatPosition").transform;
         healedExitPoint = GameObject.Find("HealedExit").transform;

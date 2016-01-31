@@ -172,8 +172,13 @@ public class GameManager : StateMachineBase {
 
     void HEALING_OnEnterState() {
         comboUI.enabled = true;
-        
-        patientTime = patientTimeOut * currentPatient.currentIllnesses.Count;
+
+        if (currentPatient.currentIllnesses.Count == 0) {
+            currentPatient.UpdateCurrentIllnesses();
+            Debug.Log("*********** WAS 0 ************");
+        }
+
+        patientTime = patientTimeOut * Mathf.Max(1, currentPatient.currentIllnesses.Count);
         patientTimeOut = patientTime;
        // patientTime = patientTimeOut;
 
